@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <title>地图展示</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        font-family: "Microsoft YaHei";
+        box-sizing: border-box;
+    }
+
+    body, html {
+        width: 100%;
+        height: 100%;
+    }
+
+    .main {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .main-top {
+        width: 600px;
+        height: 45px;
+        position: absolute;
+        z-index: 5;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        line-height: 40px;
+        font-size: 14px;
+        color: #333333;
+        text-align: center;
+        background: url("img/head.png") no-repeat;
+        background-size: 100% 100%;
+        /* 一些不支持背景渐变的浏览器 */
+        /*background:-moz-linear-gradient(top, #fff,#eee );*/
+        /*background:-webkit-gradient(linear, 0 0, 0 bottom, from(#fff), to(#eee ));*/
+        /*background:-o-linear-gradient(top, #fff, #eee );*/
+    }
+
+    .main-top button {
+        width: 140px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 30px;
+        border: 0;
+        border-radius: 4px;
+        color: #fff;
+        background: rgb(34, 136, 110); /* 一些不支持背景渐变的浏览器 */
+        background: -moz-linear-gradient(top, #43B89E, #10684F);
+        background: -webkit-gradient(linear, 0 0, 0 bottom, from(#43B89E), to(#10684F));
+        background: -o-linear-gradient(top, #43B89E, #10684F);
+        vertical-align: middle;
+        margin: 0 10px;
+    }
+
+    .main-left {
+        width: 90px;
+        height: 436px;
+        position: absolute;
+        z-index: 5;
+        top: 70px;
+        padding: 43px 0 0 10px;
+        background: url("img/left.png") no-repeat;
+    }
+
+    .main-left ul {
+        width: 100%;
+    }
+
+    .main-left ul li {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 10px;
+
+    }
+
+    .main-left ul li img {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+
+    }
+
+    .main-left ul li.open .hover-show {
+        display: block;
+
+    }
+
+    .hover-show {
+        position: absolute;
+        top: 0;
+        left: 90px;
+        display: none;
+        width: 857px;
+        height: 419px;
+        padding-left: 20px;
+    }
+
+    .hover-show_box {
+        width: 817px;
+        height: 419px;
+        background: #fff;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+
+    }
+
+    .hover-show img {
+        width: 772px !important;
+        height: 336px !important;
+        margin: auto;
+        margin-top: 40px;
+
+    }
+
+    .main-control {
+        height: 40px;
+        position: absolute;
+        z-index: 5;
+        top: 30px;
+        right: 0;
+        line-height: 40px;
+    }
+
+    .main-control .dropdown {
+        width: 140px;
+        height: 40px;
+        margin-right: 50px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .main-control .dropdown li {
+        padding-left: 20px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .main-control .dropdown li:hover {
+        background: #F6F7F9;
+    }
+
+    .main-control .dropdown li.active {
+        background: #F6F7F9;
+    }
+
+    .main-control .dropdown li.active:after {
+        content: "✔";
+        color: #333;
+        width: 20px;
+        height: 20px;
+        float: right;
+    }
+
+    .main-control img {
+        width: 140px;
+        height: 40px;
+        line-height: 40px;
+
+        cursor: pointer;
+    }
+
+    .main-table {
+        position: absolute;
+        z-index: 6;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        margin-top: -50px;
+        background: #fff;
+
+    }
+    .table-controller{
+        padding: 20px 20px 0 20px;
+        height: 54px;
+    }
+     .table-control_title{
+         line-height: 34px;
+         float: left;
+         width: 20%;
+     }
+    .table-controller select{
+        height: 34px;
+        float: left;
+        width: 80%;
+
+    }
+    .input-group {
+        float: left;
+        width: 80%;
+    }
+
+    .table-head {
+        height: 50px;
+        line-height: 50px;
+        background: #28A687;
+        color: #fff;
+        text-align: right;
+        padding-right: 20px;
+    }
+      .table-swith{
+          cursor: pointer;
+      }
+
+    .table thead{
+        background: #eee;
+    }
+    .table th,.table td{
+        text-align: center;
+    }
+    .table input[type=checkbox]{
+        width: 15px;
+        height: 15px;
+    }
+    .main-map {
+        width: 100%;
+        height: 100%;
+        /*background: url("img/bg2.png") no-repeat;*/
+        background: #fff;
+        background-size: 100% 100%;
+        /*opacity: 0.47;*/
+    }
+</style>
+<body>
+<div class="main">
+    <div class="main-top">
+        <span>星期天&nbsp; 1992年02月03日</span>
+        <button type="button">LOGO</button>
+        <span>星期天&nbsp; 1992年02月03日</span>
+    </div>
+    <div class="main-left">
+        <ul>
+            <li  class="list-li">
+                <img src="img/ren.png">
+            </li>
+            <li class="list-li">
+                <img src="img/jixie.png">
+                <div class="hover-show" >
+                    <div class="hover-show_box">
+                        <img src="img/list.png">
+                    </div>
+                </div>
+            </li>
+            <li class="list-li">
+                <img src="img/sheshi.png">
+            </li>
+            <li class="list-li">
+                <img src="img/shijian.png">
+            </li>
+        </ul>
+    </div>
+    <div class="main-control">
+        <div class="dropdown">
+            <img src="img/tuxheng.png" id="dLabel" type="button" data-toggle="dropdown">
+            <ul class="dropdown-menu" aria-labelledby="dLabel">
+                <li class="active">车辆位置</li>
+                <li>超时停车</li>
+                <li>超速点</li>
+                <li>开</li>
+                <li>关</li>
+            </ul>
+        </div>
+        <div class="dropdown">
+            <img src="img/gongzu.png" id="dLabel2" type="button" data-toggle="dropdown">
+            <ul class="dropdown-menu" aria-labelledby="dLabel2">
+                <li>测距</li>
+                <li>显示坐标</li>
+                <li>查找位置</li>
+                <li>开关聚合</li>
+            </ul>
+        </div>
+
+
+    </div>
+    <div class="main-map" id="container"></div>
+
+    <div class="main-table">
+        <div class="table-head">
+            <span class="table-swith table-close">打开</span>
+        </div>
+        <div class="table-controller">
+            <div class="col-sm-3">
+                <span class="table-control_title">部门：</span>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="请输入部门名称" aria-describedby="basic-addon1">
+                    <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <span class="table-control_title">类型：</span>
+                <select class="form-control">
+                    <option>请选择</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <span class="table-control_title">车牌：</span>
+                <div class="input-group">
+                    <input type="text" class="form-control"  placeholder="请输入车牌号"  aria-describedby="basic-addon2">
+                    <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-default">实时监控</button>
+            </div>
+
+
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th width="5%"><input type="checkbox"></th>
+                <th width="10%">车牌号</th>
+                <th width="8%">回放</th>　　
+                <th width="10%">所属部门</th>
+                <th width="10%">车辆类型</th>
+                <th width="10%">发车时间</th>
+                <th width="10%">车收时间</th>
+                <th width="10%">行驶里程</th>
+
+                <th width="8%">油耗曲线</th>
+                <th width="8%">当前状态</th>
+                <th width="11%">最后上报时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+               <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
+<script src="js/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=q2LYzxLEHgWxDXcdxoduN1fShNi5kNie">
+    //v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=q2LYzxLEHgWxDXcdxoduN1fShNi5kNie"
+    //v1.4版本及以前版本的引用方式：src="http://api.map.baidu.com/api?v=1.4&key=q2LYzxLEHgWxDXcdxoduN1fShNi5kNie&callback=initialize"
+</script>
+<script>
+    var sContent =
+        "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>天安门</h4>" +
+        "<img style='float:right;margin:4px' id='imgDemo' src='../img/tianAnMen.jpg' width='139' height='104' title='天安门'/>" +
+        "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>天安门坐落在中国北京市中心,故宫的南侧,与天安门广场隔长安街相望,是清朝皇城的大门...</p>" +
+        "</div>";
+
+    var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+//    map.centerAndZoom(point, 15);
+//    map.addOverlay(marker);
+//    marker.addEventListener("click", function(){
+//        this.openInfoWindow(infoWindow);
+//        //图片加载完毕重绘infowindow
+//        document.getElementById('imgDemo').onload = function (){
+//            infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+//        }
+//    });
+</script>
+<script>
+    var oriPoint=[]
+//    var geolocation = new BMap.Geolocation();
+//    geolocation.getCurrentPosition(function(r) {
+//        if (this.getStatus() == "0") {
+//            oriPoint.push(r.point.lng);
+//            oriPoint.push(r.point.lat);
+//           // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+//        }
+//        else {
+//            oriPoint.push(116.404);
+//            oriPoint.push(39.915);
+//            alert('failed' + this.getStatus());
+//        }
+//        initMap();
+//    })
+    oriPoint.push(116.404);
+    oriPoint.push(39.915);
+    initMap();
+    var icons={
+        "car":new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157)),
+        "people":new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157)),
+        "car":new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157))
+    }
+    function initMap() {
+        var map = new BMap.Map("container");          // 创建地图实例
+        var point = new BMap.Point(oriPoint[0],oriPoint[1]);  // 创建点坐标
+        map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别
+        map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+        map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+        var markerOri = new BMap.Marker(point);
+        map.addOverlay(markerOri);
+        var geoc = new BMap.Geocoder();
+        // 编写自定义函数,创建标注
+        function addMarker(point){
+            var myIcon = new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157));
+            var marker = new BMap.Marker(point,{icon:myIcon});
+            map.addOverlay(marker);
+        }
+        function ComplexCustomOverlay(point, text, mouseoverText){
+            this._point = point;
+            this._text = text;
+            this._overText = mouseoverText;
+        }
+        ComplexCustomOverlay.prototype = new BMap.Overlay();
+        ComplexCustomOverlay.prototype.initialize = function(map){
+            this._map = map;
+            var div = this._div = document.createElement("div");
+            div.style.position = "absolute";
+            div.style.zIndex = BMap.Overlay.getZIndex(this._point.lat);
+            div.style.backgroundColor = "rgba(0,0,0,0.6)";
+            div.style.border = "1px solid #000";
+            div.style.color = "white";
+            div.style.height = "24px";
+            div.style.padding = "0 2px";
+            div.style.lineHeight = "24px";
+            div.style.whiteSpace = "nowrap";
+            div.style.MozUserSelect = "none";
+            div.style.fontSize = "12px"
+            var span = this._span = document.createElement("span");
+            div.appendChild(span);
+            span.appendChild(document.createTextNode(this._text));
+            var that = this;
+
+            var arrow = this._arrow = document.createElement("div");
+            arrow.style.background = "url(http://map.baidu.com/fwmap/upload/r/map/fwmap/static/house/images/label.png) no-repeat";
+            arrow.style.position = "absolute";
+            arrow.style.width = "11px";
+            arrow.style.height = "10px";
+            arrow.style.top = "22px";
+            arrow.style.left = "10px";
+            arrow.style.overflow = "hidden";
+           // div.appendChild(arrow);
+
+//            div.onmouseover = function(){
+//                this.style.backgroundColor = "#6BADCA";
+//                this.style.borderColor = "#0000ff";
+//                this.getElementsByTagName("span")[0].innerHTML = that._overText;
+//                arrow.style.backgroundPosition = "0px -20px";
+//            }
+//
+//            div.onmouseout = function(){
+//                this.style.backgroundColor = "#EE5D5B";
+//                this.style.borderColor = "#BC3B3A";
+//                this.getElementsByTagName("span")[0].innerHTML = that._text;
+//                arrow.style.backgroundPosition = "0px 0px";
+//            }
+            div.onclick=function () {
+                map.openInfoWindow(infoWindow,that._point); //开启信息窗口
+                //图片加载完毕重绘infowindow
+//                document.getElementById('imgDemo').onload = function (){
+//                    infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+//                }
+            }
+            map.getPanes().labelPane.appendChild(div);
+
+            return div;
+        }
+        ComplexCustomOverlay.prototype.draw = function(){
+            var map = this._map;
+            var pixel = map.pointToOverlayPixel(this._point);
+            this._div.style.left = pixel.x - parseInt(this._arrow.style.left) + "px";
+            this._div.style.top  = pixel.y - 30 + "px";
+        }
+        var txt = "银湖海岸城", mouseoverTxt = txt + " " + parseInt(Math.random() * 1000,10) + "套" ;
+
+
+        // 随机向地图添加25个标注
+        var bounds = map.getBounds();
+        var sw = bounds.getSouthWest();
+        var ne = bounds.getNorthEast();
+        var lngSpan = Math.abs(sw.lng - ne.lng);
+        var latSpan = Math.abs(ne.lat - sw.lat);
+        for (var i = 0; i < 25; i ++) {
+            let point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+//            addMarker(point);
+            geoc.getLocation(point, function(rs){
+                var addComp = rs.addressComponents;
+                var string= addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+                var myCompOverlay = new ComplexCustomOverlay(point, string,mouseoverTxt);
+                map.addOverlay(myCompOverlay);
+            });
+
+        }
+    setInterval(function () {
+        map.clearOverlays();
+        for (var i = 0; i < 25; i ++) {
+            var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+         //   addMarker(point);
+         //   var myCompOverlay = new ComplexCustomOverlay(point, "张三1" ,mouseoverTxt);
+         //   map.addOverlay(myCompOverlay);
+
+//            let point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+////            addMarker(point);
+//            geoc.getLocation(point, function(rs){
+//                var addComp = rs.addressComponents;
+//                var string= addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+//                var myCompOverlay = new ComplexCustomOverlay(point,string,mouseoverTxt);
+//                map.addOverlay(myCompOverlay);
+//            });
+
+        }
+    },5000)
+    }
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        $(".dropdown li").click(function () {
+            $(this).addClass("active");
+            $(this).siblings("li").removeClass("active")
+        });
+        $(".table-swith").click(function () {
+            if($(this).hasClass("table-close")){
+                $(".main-table").stop().animate({"top":"50%"},200)
+                $(this).removeClass("table-close")
+                $(this).html("收起")
+            }else{
+                $(".main-table").stop().animate({"top":"100%"},200)
+                $(this).html("打开")
+                $(this).addClass("table-close")
+            }
+        });
+        $(".list-li").click(function () {
+            if($(this).hasClass("open")){
+                $(this).removeClass("open");
+            }else{
+                $(this).addClass("open");
+                $(this).siblings("li").removeClass("open");
+            }
+
+        })
+    })
+</script>
