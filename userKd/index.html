@@ -244,10 +244,10 @@
     </div>
     <div class="main-left">
         <ul>
-            <li  class="list-li">
+            <li  class="list-li" data-type="people">
                 <img src="img/ren.png">
             </li>
-            <li class="list-li">
+            <li class="list-li" data-type="car">
                 <img src="img/jixie.png">
                 <div class="hover-show" >
                     <div class="hover-show_box">
@@ -255,7 +255,7 @@
                     </div>
                 </div>
             </li>
-            <li class="list-li">
+            <li class="list-li" data-type="wc">
                 <img src="img/sheshi.png">
             </li>
             <li class="list-li">
@@ -543,9 +543,9 @@
     oriPoint.push(39.915);
     initMap();
     var icons={
-        "car":new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157)),
-        "people":new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157)),
-        "car":new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157))
+        "car":new BMap.Icon("img/car.png", new BMap.Size(49,32)),
+        "people":new BMap.Icon("img/people.png", new BMap.Size(22,54)),
+        "wc":new BMap.Icon("img/wc.png", new BMap.Size(43,40))
     }
     function initMap() {
         var map = new BMap.Map("container");          // 创建地图实例
@@ -557,8 +557,15 @@
         map.addOverlay(markerOri);
         var geoc = new BMap.Geocoder();
         // 编写自定义函数,创建标注
-        function addMarker(point){
-            var myIcon = new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157));
+        function addMarker(point,type){
+            if(type=="car"){
+                var myIcon = icons.car
+            }else if(type=="wc"){
+                var myIcon = icons.wc
+            }else if(type=="people"){
+                var myIcon = icons.people
+            }
+
             var marker = new BMap.Marker(point,{icon:myIcon});
             map.addOverlay(marker);
         }
@@ -665,7 +672,23 @@
 //            });
 
         }
-    },5000)
+    },50000000)
+
+        $(".list-li").click(function () {
+//            if($(this).hasClass("open")){
+//                $(this).removeClass("open");
+//            }else{
+//                $(this).addClass("open");
+//                $(this).siblings("li").removeClass("open");
+//            }
+            map.clearOverlays();
+            var type=$(this).attr("data-type")
+            for (var i = 0; i < 25; i ++) {
+                let point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+                addMarker(point,type);
+            }
+
+        })
     }
 
 </script>
@@ -686,14 +709,21 @@
                 $(this).addClass("table-close")
             }
         });
-        $(".list-li").click(function () {
-            if($(this).hasClass("open")){
-                $(this).removeClass("open");
-            }else{
-                $(this).addClass("open");
-                $(this).siblings("li").removeClass("open");
-            }
-
-        })
-    })
+      //  $(".list-li").click(function () {
+//            if($(this).hasClass("open")){
+//                $(this).removeClass("open");
+//            }else{
+//                $(this).addClass("open");
+//                $(this).siblings("li").removeClass("open");
+//            }
+//             var type=$(this).attr("data-type")
+//            var bounds = map.getBounds();
+//            var sw = bounds.getSouthWest();
+//            var ne = bounds.getNorthEast();
+//            var lngSpan = Math.abs(sw.lng - ne.lng);
+//            var latSpan = Math.abs(ne.lat - sw.lat);
+//            let point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+//            addMarker(point,type);
+//        })
+     })
 </script>
