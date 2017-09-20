@@ -523,22 +523,23 @@
 //        }
 //    });
 </script>
+<script src="js/user.js"></script>
 <script>
     var oriPoint=[]
-//    var geolocation = new BMap.Geolocation();
-//    geolocation.getCurrentPosition(function(r) {
-//        if (this.getStatus() == "0") {
-//            oriPoint.push(r.point.lng);
-//            oriPoint.push(r.point.lat);
-//           // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
-//        }
-//        else {
-//            oriPoint.push(116.404);
-//            oriPoint.push(39.915);
-//            alert('failed' + this.getStatus());
-//        }
-//        initMap();
-//    })
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r) {
+        if (this.getStatus() == "0") {
+            oriPoint.push(r.point.lng);
+            oriPoint.push(r.point.lat);
+           // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+        }
+        else {
+            oriPoint.push(116.404);
+            oriPoint.push(39.915);
+            alert('failed' + this.getStatus());
+        }
+        //initMap();
+    })
     oriPoint.push(116.404);
     oriPoint.push(39.915);
     initMap();
@@ -556,87 +557,8 @@
         var markerOri = new BMap.Marker(point);
         map.addOverlay(markerOri);
         var geoc = new BMap.Geocoder();
-        // 编写自定义函数,创建标注
-        function addMarker(point,type){
-            if(type=="car"){
-                var myIcon = icons.car
-            }else if(type=="wc"){
-                var myIcon = icons.wc
-            }else if(type=="people"){
-                var myIcon = icons.people
-            }
 
-            var marker = new BMap.Marker(point,{icon:myIcon});
-            map.addOverlay(marker);
-        }
-        function ComplexCustomOverlay(point, text, mouseoverText){
-            this._point = point;
-            this._text = text;
-            this._overText = mouseoverText;
-        }
-        ComplexCustomOverlay.prototype = new BMap.Overlay();
-        ComplexCustomOverlay.prototype.initialize = function(map){
-            this._map = map;
-            var div = this._div = document.createElement("div");
-            div.style.position = "absolute";
-            div.style.zIndex = BMap.Overlay.getZIndex(this._point.lat);
-            div.style.backgroundColor = "rgba(0,0,0,0.6)";
-            div.style.border = "1px solid #000";
-            div.style.color = "white";
-            div.style.height = "24px";
-            div.style.padding = "0 2px";
-            div.style.lineHeight = "24px";
-            div.style.whiteSpace = "nowrap";
-            div.style.MozUserSelect = "none";
-            div.style.fontSize = "12px"
-            var span = this._span = document.createElement("span");
-            div.appendChild(span);
-            span.appendChild(document.createTextNode(this._text));
-            var that = this;
-
-            var arrow = this._arrow = document.createElement("div");
-            arrow.style.background = "url(http://map.baidu.com/fwmap/upload/r/map/fwmap/static/house/images/label.png) no-repeat";
-            arrow.style.position = "absolute";
-            arrow.style.width = "11px";
-            arrow.style.height = "10px";
-            arrow.style.top = "22px";
-            arrow.style.left = "10px";
-            arrow.style.overflow = "hidden";
-           // div.appendChild(arrow);
-
-//            div.onmouseover = function(){
-//                this.style.backgroundColor = "#6BADCA";
-//                this.style.borderColor = "#0000ff";
-//                this.getElementsByTagName("span")[0].innerHTML = that._overText;
-//                arrow.style.backgroundPosition = "0px -20px";
-//            }
-//
-//            div.onmouseout = function(){
-//                this.style.backgroundColor = "#EE5D5B";
-//                this.style.borderColor = "#BC3B3A";
-//                this.getElementsByTagName("span")[0].innerHTML = that._text;
-//                arrow.style.backgroundPosition = "0px 0px";
-//            }
-            div.onclick=function () {
-                map.openInfoWindow(infoWindow,that._point); //开启信息窗口
-                //图片加载完毕重绘infowindow
-//                document.getElementById('imgDemo').onload = function (){
-//                    infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
-//                }
-            }
-            map.getPanes().labelPane.appendChild(div);
-
-            return div;
-        }
-        ComplexCustomOverlay.prototype.draw = function(){
-            var map = this._map;
-            var pixel = map.pointToOverlayPixel(this._point);
-            this._div.style.left = pixel.x - parseInt(this._arrow.style.left) + "px";
-            this._div.style.top  = pixel.y - 30 + "px";
-        }
         var txt = "银湖海岸城", mouseoverTxt = txt + " " + parseInt(Math.random() * 1000,10) + "套" ;
-
-
         // 随机向地图添加25个标注
         var bounds = map.getBounds();
         var sw = bounds.getSouthWest();
@@ -654,26 +576,19 @@
             });
 
         }
-    setInterval(function () {
-        map.clearOverlays();
-        for (var i = 0; i < 25; i ++) {
-            var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
-         //   addMarker(point);
-         //   var myCompOverlay = new ComplexCustomOverlay(point, "张三1" ,mouseoverTxt);
-         //   map.addOverlay(myCompOverlay);
-
-//            let point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
-////            addMarker(point);
-//            geoc.getLocation(point, function(rs){
-//                var addComp = rs.addressComponents;
-//                var string= addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
-//                var myCompOverlay = new ComplexCustomOverlay(point,string,mouseoverTxt);
-//                map.addOverlay(myCompOverlay);
-//            });
-
+        var polygon = new BMap.Polygon([
+            new BMap.Point(116.387112,39.920977),
+            new BMap.Point(116.385243,39.913063),
+            new BMap.Point(116.394226,39.917988),
+            new BMap.Point(116.401772,39.921364),
+            new BMap.Point(116.41248,39.927893)
+        ], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});  //创建多边形
+        polygon.addEventListener("click",attribute);
+        function attribute() {
+            alert("我是no 1")
         }
-    },50000000)
-
+        map.addOverlay(polygon);
+        //菜单点击
         $(".list-li").click(function () {
 //            if($(this).hasClass("open")){
 //                $(this).removeClass("open");
@@ -685,12 +600,30 @@
             var type=$(this).attr("data-type")
             for (var i = 0; i < 25; i ++) {
                 let point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
-                addMarker(point,type);
+                addMarker(point,type,map);
             }
 
         })
     }
+    //    setInterval(function () {
+    //        map.clearOverlays();
+    //        for (var i = 0; i < 25; i ++) {
+    //            var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+    //   addMarker(point);
+    //   var myCompOverlay = new ComplexCustomOverlay(point, "张三1" ,mouseoverTxt);
+    //   map.addOverlay(myCompOverlay);
 
+    //            let point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+    ////            addMarker(point);
+    //            geoc.getLocation(point, function(rs){
+    //                var addComp = rs.addressComponents;
+    //                var string= addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+    //                var myCompOverlay = new ComplexCustomOverlay(point,string,mouseoverTxt);
+    //                map.addOverlay(myCompOverlay);
+    //            });
+
+    //        }
+    //    },50000000)
 </script>
 <script type="text/javascript">
     $(function () {
