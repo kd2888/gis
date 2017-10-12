@@ -184,25 +184,21 @@
         background: #fff;
 
     }
-
-    .table-controller {
+    .table-controller{
         padding: 20px 20px 0 20px;
         height: 54px;
     }
-
-    .table-control_title {
+    .table-control_title{
         line-height: 34px;
         float: left;
         width: 20%;
     }
-
-    .table-controller select {
+    .table-controller select{
         height: 34px;
         float: left;
         width: 80%;
 
     }
-
     .input-group {
         float: left;
         width: 80%;
@@ -216,24 +212,20 @@
         text-align: right;
         padding-right: 20px;
     }
-
-    .table-swith {
+    .table-swith{
         cursor: pointer;
     }
 
-    .table thead {
+    .table thead{
         background: #eee;
     }
-
-    .table th, .table td {
+    .table th,.table td{
         text-align: center;
     }
-
-    .table input[type=checkbox] {
+    .table input[type=checkbox]{
         width: 15px;
         height: 15px;
     }
-
     .main-map {
         width: 100%;
         height: 100%;
@@ -252,12 +244,12 @@
     </div>
     <div class="main-left">
         <ul>
-            <li class="list-li" data-type="people">
+            <li  class="list-li" data-type="people">
                 <img src="img/ren.png">
             </li>
             <li class="list-li" data-type="car">
                 <img src="img/jixie.png">
-                <div class="hover-show">
+                <div class="hover-show" >
                     <div class="hover-show_box">
                         <img src="img/list.png">
                     </div>
@@ -305,8 +297,7 @@
                 <span class="table-control_title">部门：</span>
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="请输入部门名称" aria-describedby="basic-addon1">
-                    <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search"
-                                                                            aria-hidden="true"></span></span>
+                    <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                 </div>
             </div>
             <div class="col-sm-3">
@@ -318,9 +309,8 @@
             <div class="col-sm-3">
                 <span class="table-control_title">车牌：</span>
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="请输入车牌号" aria-describedby="basic-addon2">
-                    <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-search"
-                                                                            aria-hidden="true"></span></span>
+                    <input type="text" class="form-control"  placeholder="请输入车牌号"  aria-describedby="basic-addon2">
+                    <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                 </div>
             </div>
             <div class="col-sm-3">
@@ -334,8 +324,7 @@
             <tr>
                 <th width="5%"><input type="checkbox"></th>
                 <th width="10%">车牌号</th>
-                <th width="8%">回放</th>
-                　　
+                <th width="8%">回放</th>　　
                 <th width="10%">所属部门</th>
                 <th width="10%">车辆类型</th>
                 <th width="10%">发车时间</th>
@@ -507,52 +496,6 @@
             </tbody>
         </table>
     </div>
-    <div class="footer-controller">
-        轨迹：<div class="switchCheck">
-                  <div class="switchCheck-btn"></div>
-                    <div class="switchCheck-shadow"></div>
-               </div>
-    </div>
-    <style>
-        .footer-controller{
-            width: 100%;
-            position: absolute;
-            z-index: 10;
-            left: 90px;
-            bottom: 90px;
-        }
-        .switchCheck{
-            width: 40px;
-            height: 20px;
-            background: red;
-            border-radius: 10px;
-            display:inline-block;
-            vertical-align: middle;
-               position: relative;
-
-        }
-        .switchCheck-btn {
-            width: 20px;
-            height: 20px;
-          background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: 12;
-        }
-        .switchCheck-shadow{
-            width: 41px;
-            height: 20px;
-            background: #fff;
-            border-radius: 10px;
-            position: absolute;
-            right: -1px;
-            top: 0;
-            z-index: 11;
-        }
-    </style>
 </div>
 </body>
 </html>
@@ -562,57 +505,41 @@
     //v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=q2LYzxLEHgWxDXcdxoduN1fShNi5kNie"
     //v1.4版本及以前版本的引用方式：src="http://api.map.baidu.com/api?v=1.4&key=q2LYzxLEHgWxDXcdxoduN1fShNi5kNie&callback=initialize"
 </script>
-<script>
-    var sContent =
-        "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>天安门</h4>" +
-        "<img style='float:right;margin:4px' id='imgDemo' src='../img/tianAnMen.jpg' width='139' height='104' title='天安门'/>" +
-        "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>天安门坐落在中国北京市中心,故宫的南侧,与天安门广场隔长安街相望,是清朝皇城的大门...</p>" +
-        "</div>";
 
-    var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
-    //    map.centerAndZoom(point, 15);
-    //    map.addOverlay(marker);
-    //    marker.addEventListener("click", function(){
-    //        this.openInfoWindow(infoWindow);
-    //        //图片加载完毕重绘infowindow
-    //        document.getElementById('imgDemo').onload = function (){
-    //            infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
-    //        }
-    //    });
-</script>
+
 <script src="js/user.js"></script>
 <script>
-    var oriPoint = []
+    var oriPoint=[]
     var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
-        if (this.getStatus() == "0") {
-            oriPoint.push(r.point.lng);
-            oriPoint.push(r.point.lat);
-// alert('您的位置：' + r.point.lng + ',' + r.point.lat);
-        }
-        else {
-            oriPoint.push(116.404);
-            oriPoint.push(39.915);
-            alert('failed' + this.getStatus());
-        }
-//initMap();
-    })
+    //    geolocation.getCurrentPosition(function(r) {
+    //        if (this.getStatus() == "0") {
+    //            oriPoint.push(r.point.lng);
+    //            oriPoint.push(r.point.lat);
+    //// alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+    //        }
+    //        else {
+    //            oriPoint.push(116.404);
+    //            oriPoint.push(39.915);
+    //            alert('failed' + this.getStatus());
+    //        }
+    ////initMap();
+    //    })
     oriPoint.push(116.404);
     oriPoint.push(39.915);
+
+    var icons={
+        "car":new BMap.Icon("img/car.png", new BMap.Size(49,32)),
+        "people":new BMap.Icon("img/people.png", new BMap.Size(22,54)),
+        "wc":new BMap.Icon("img/wc.png", new BMap.Size(43,40))
+    }
     var cars=[];
     var people=[];
     var sheshi=[];
     var shijian=[];
     initMap();
-    var icons = {
-        "car": new BMap.Icon("img/car.png", new BMap.Size(49, 32)),
-        "people": new BMap.Icon("img/people.png", new BMap.Size(22, 54)),
-        "wc": new BMap.Icon("img/wc.png", new BMap.Size(43, 40))
-    }
-
     function initMap() {
         var map = new BMap.Map("container");          // 创建地图实例
-        var point = new BMap.Point(oriPoint[0], oriPoint[1]);  // 创建点坐标
+        var point = new BMap.Point(oriPoint[0],oriPoint[1]);  // 创建点坐标
         map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别
         map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
         map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
@@ -620,46 +547,94 @@
         map.addOverlay(markerOri);
         var geoc = new BMap.Geocoder();
 
-        var txt = "银湖海岸城", mouseoverTxt = txt + " " + parseInt(Math.random() * 1000, 10) + "套";
+        var txt = "银湖海岸城", mouseoverTxt = txt + " " + parseInt(Math.random() * 1000,10) + "套" ;
 // 随机向地图添加25个标注
         var bounds = map.getBounds();
         var sw = bounds.getSouthWest();
         var ne = bounds.getNorthEast();
         var lngSpan = Math.abs(sw.lng - ne.lng);
         var latSpan = Math.abs(ne.lat - sw.lat);
-        for (var i = 0; i < 25; i++) {
+        for (var i = 0; i < 25; i ++) {
             let point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
 //            addMarker(point);
-            geoc.getLocation(point, function (rs) {
+            geoc.getLocation(point, function(rs){
                 var addComp = rs.addressComponents;
-                var string = addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
-                var myCompOverlay = new ComplexCustomOverlay(point, string, mouseoverTxt);
-                map.addOverlay(myCompOverlay);
+                var string= addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+                var myCompOverlay = new ComplexCustomOverlay(point, string,mouseoverTxt);
+                // map.addOverlay(myCompOverlay);
             });
 
         }
         addPoint(cars); addPoint(people); addPoint(sheshi); addPoint(shijian);
-
-
+//        var polygonList=[{lng:116.387112, lat:39.920977},{lng:116.385243, lat:39.913063},{lng:116.394226, lat:39.917988},
+//            {lng:116.401772, lat:39.921364},{lng:116.41248, lat:39.927893}];
+//        var polyline = new BMap.Polyline([
+//            new BMap.Point(116.399, 39.910),
+//            new BMap.Point(116.405, 39.920),
+//            new BMap.Point(116.423493, 39.907445)
+//        ], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});   //创建折线
+//        map.addOverlay(polyline);   //增加折线
+//        var point=[];
+//        var pointNow=""
+//        map.addEventListener("click",function(e){
+//
+//         if(pointNow==""){
+//             point.push({lng:e.point.lng,lat:e.point.lat})
+//             pointNow={lng:e.point.lng,lat:e.point.lat};
+//         }else{
+//             var polyline = new BMap.Polyline([
+//                 new BMap.Point(pointNow.lng,pointNow.lat),
+//                 new BMap.Point(e.point.lng,e.point.lat),
+//             ], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});   //创建折线
+//             map.addOverlay(polyline);
+//             point.push({lng:e.point.lng,lat:e.point.lat})
+//             pointNow={lng:e.point.lng,lat:e.point.lat};
+//         }
+//
+//        });
 //菜单点击
         $(".list-li").click(function () {
+//            if($(this).hasClass("open")){
+//                $(this).removeClass("open");
+//            }else{
+            //                $(this).addClass("open");
+            //                $(this).siblings("li").removeClass("open");
+            //            }
             map.clearOverlays();
-            var type = $(this).attr("data-type")
-            for (var i = 0; i < 25; i++) {
-                var point
-                if(type=='car'){
-                    point=cars[i]
-                }else if(type=="people"){
-                    point=people[i]
-                }else if(type=="wc"){
-                    point=sheshi[i]
-                }else{
-                    point=shijian[i]
-                }
-                addMarker(point, type, map,i);
+            var type=$(this).attr("data-type")
+            for (var i = 0; i < 25; i ++) {
+                let point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+                addMarker(point,type,map);
             }
 
         })
+
+        function mathCenter(geoCoordinateList) {
+
+            var total = geoCoordinateList.length;
+            var X = 0, Y = 0, Z = 0;
+            geoCoordinateList.forEach(function (g) {
+                var lat, lng, x, y, z;
+                lat = g.lat * Math.PI / 180;
+                lng = g.lng * Math.PI / 180;
+                x = Math.cos(lat) * Math.cos(lng);
+                y = Math.cos(lat) * Math.sin(lng);
+                z = Math.sin(lat);
+                X += x;
+                Y += y;
+                Z += z;
+            });
+
+
+            X = X / total;
+            Y = Y / total;
+            Z = Z / total;
+            var Lng = Math.atan2(Y, X);
+            var Hyp = Math.sqrt(X * X + Y * Y);
+            var Lat = Math.atan2(Z, Hyp);
+            return  { lng:Lng * 180 / Math.PI,lat:Lat * 180 / Math.PI};
+
+        }
         function addPoint(arr) {
             for (var i = 0; i < 25; i ++) {
                 var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
@@ -667,7 +642,6 @@
             }
         }
     }
-
     //    setInterval(function () {
     //        map.clearOverlays();
     //        for (var i = 0; i < 25; i ++) {
@@ -695,12 +669,12 @@
             $(this).siblings("li").removeClass("active")
         });
         $(".table-swith").click(function () {
-            if ($(this).hasClass("table-close")) {
-                $(".main-table").stop().animate({"top": "50%"}, 200)
+            if($(this).hasClass("table-close")){
+                $(".main-table").stop().animate({"top":"50%"},200)
                 $(this).removeClass("table-close")
                 $(this).html("收起")
-            } else {
-                $(".main-table").stop().animate({"top": "100%"}, 200)
+            }else{
+                $(".main-table").stop().animate({"top":"100%"},200)
                 $(this).html("打开")
                 $(this).addClass("table-close")
             }
@@ -723,12 +697,4 @@
 //        })
     })
 
-   $(".switchCheck-btn").click(function () {
-       if($(this).hasClass("open")){
-           $(this).stop().animate({"width":"20px"},200)
-       }else{
-           $(this).stop().animate({"left":"0"},200)
-           $(".switchCheck-shadow").stop().animate({"width":"0px"},200)
-       }
-   })
 </script>

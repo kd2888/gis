@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <title>地图展示</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        font-family: "Microsoft YaHei";
+        box-sizing: border-box;
+    }
+
+    body, html {
+        width: 100%;
+        height: 100%;
+    }
+
+    .main {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .main-top {
+        width: 600px;
+        height: 45px;
+        position: absolute;
+        z-index: 5;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        line-height: 40px;
+        font-size: 14px;
+        color: #333333;
+        text-align: center;
+        background: url("img/head.png") no-repeat;
+        background-size: 100% 100%;
+        /* 一些不支持背景渐变的浏览器 */
+        /*background:-moz-linear-gradient(top, #fff,#eee );*/
+        /*background:-webkit-gradient(linear, 0 0, 0 bottom, from(#fff), to(#eee ));*/
+        /*background:-o-linear-gradient(top, #fff, #eee );*/
+    }
+
+    .main-top button {
+        width: 140px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 30px;
+        border: 0;
+        border-radius: 4px;
+        color: #fff;
+        background: rgb(34, 136, 110); /* 一些不支持背景渐变的浏览器 */
+        background: -moz-linear-gradient(top, #43B89E, #10684F);
+        background: -webkit-gradient(linear, 0 0, 0 bottom, from(#43B89E), to(#10684F));
+        background: -o-linear-gradient(top, #43B89E, #10684F);
+        vertical-align: middle;
+        margin: 0 10px;
+    }
+
+    .main-left {
+        width: 90px;
+        height: 436px;
+        position: absolute;
+        z-index: 5;
+        top: 70px;
+        padding: 43px 0 0 10px;
+        background: url("img/left.png") no-repeat;
+    }
+
+    .main-left ul {
+        width: 100%;
+    }
+
+    .main-left ul li {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 10px;
+
+    }
+
+    .main-left ul li img {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+
+    }
+
+    .main-left ul li.open .hover-show {
+        display: block;
+
+    }
+
+    .hover-show {
+        position: absolute;
+        top: 0;
+        left: 90px;
+        display: none;
+        width: 857px;
+        height: 419px;
+        padding-left: 20px;
+    }
+
+    .hover-show_box {
+        width: 817px;
+        height: 419px;
+        background: #fff;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+
+    }
+
+    .hover-show img {
+        width: 772px !important;
+        height: 336px !important;
+        margin: auto;
+        margin-top: 40px;
+
+    }
+
+    .main-control {
+        height: 40px;
+        position: absolute;
+        z-index: 5;
+        top: 30px;
+        right: 0;
+        line-height: 40px;
+    }
+
+    .main-control .dropdown {
+        width: 140px;
+        height: 40px;
+        margin-right: 50px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .main-control .dropdown li {
+        padding-left: 20px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .main-control .dropdown li:hover {
+        background: #F6F7F9;
+    }
+
+    .main-control .dropdown li.active {
+        background: #F6F7F9;
+    }
+
+    .main-control .dropdown li.active:after {
+        content: "✔";
+        color: #333;
+        width: 20px;
+        height: 20px;
+        float: right;
+    }
+
+    .main-control img {
+        width: 140px;
+        height: 40px;
+        line-height: 40px;
+
+        cursor: pointer;
+    }
+
+    .main-table {
+        position: absolute;
+        z-index: 6;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        margin-top: -50px;
+        background: #fff;
+
+    }
+
+    .table-controller {
+        padding: 20px 20px 0 20px;
+        height: 54px;
+    }
+
+    .table-control_title {
+        line-height: 34px;
+        float: left;
+        width: 20%;
+    }
+
+    .table-controller select {
+        height: 34px;
+        float: left;
+        width: 80%;
+
+    }
+
+    .input-group {
+        float: left;
+        width: 80%;
+    }
+
+    .table-head {
+        height: 50px;
+        line-height: 50px;
+        background: #28A687;
+        color: #fff;
+        text-align: right;
+        padding-right: 20px;
+    }
+
+    .table-swith {
+        cursor: pointer;
+    }
+
+    .table thead {
+        background: #eee;
+    }
+
+    .table th, .table td {
+        text-align: center;
+    }
+
+    .table input[type=checkbox] {
+        width: 15px;
+        height: 15px;
+    }
+
+    .main-map {
+        width: 100%;
+        height: 100%;
+        /*background: url("img/bg2.png") no-repeat;*/
+        background: #fff;
+        background-size: 100% 100%;
+        /*opacity: 0.47;*/
+    }
+</style>
+<body>
+<div class="main">
+    <div class="main-top">
+        <span>星期天&nbsp; 1992年02月03日</span>
+        <button type="button">LOGO</button>
+        <span>星期天&nbsp; 1992年02月03日</span>
+    </div>
+    <div class="main-left">
+        <input type="hidden" id="menuType" value="all">
+        <ul>
+            <li class="list-li" data-type="people">
+                <img src="img/ren.png">
+            </li>
+            <li class="list-li" data-type="car">
+                <img src="img/jixie.png">
+                <div class="hover-show">
+                    <div class="hover-show_box">
+                        <img src="img/list.png">
+                    </div>
+                </div>
+            </li>
+            <li class="list-li" data-type="installation">
+                <img src="img/sheshi.png">
+            </li>
+            <li class="list-li" data-type="events">
+                <img src="img/shijian.png">
+            </li>
+        </ul>
+    </div>
+    <!--<div class="main-control">-->
+        <!--<div class="dropdown">-->
+            <!--<img src="img/tuxheng.png" id="dLabel" type="button" data-toggle="dropdown">-->
+            <!--<ul class="dropdown-menu" aria-labelledby="dLabel">-->
+                <!--<li class="active">车辆位置</li>-->
+                <!--<li>超时停车</li>-->
+                <!--<li>超速点</li>-->
+                <!--<li>开</li>-->
+                <!--<li>关</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+        <!--<div class="dropdown">-->
+            <!--<img src="img/gongzu.png" id="dLabel2" type="button" data-toggle="dropdown">-->
+            <!--<ul class="dropdown-menu" aria-labelledby="dLabel2">-->
+                <!--<li>测距</li>-->
+                <!--<li>显示坐标</li>-->
+                <!--<li>查找位置</li>-->
+                <!--<li>开关聚合</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+
+
+    <!--</div>-->
+    <div class="main-map" id="container"></div>
+
+    <div class="main-table">
+        <div class="table-head">
+            <span class="table-swith table-close">打开</span>
+        </div>
+        <div class="table-controller">
+            <div class="col-sm-3">
+                <span class="table-control_title">部门：</span>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="请输入部门名称" aria-describedby="basic-addon1">
+                    <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search"
+                                                                            aria-hidden="true"></span></span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <span class="table-control_title">类型：</span>
+                <select class="form-control">
+                    <option>请选择</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <span class="table-control_title">车牌：</span>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="请输入车牌号" aria-describedby="basic-addon2">
+                    <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-search"
+                                                                            aria-hidden="true"></span></span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-default">实时监控</button>
+            </div>
+
+
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th width="5%"><input type="checkbox"></th>
+                <th width="10%">车牌号</th>
+                <th width="8%">回放</th>
+                　　
+                <th width="10%">所属部门</th>
+                <th width="10%">车辆类型</th>
+                <th width="10%">发车时间</th>
+                <th width="10%">车收时间</th>
+                <th width="10%">行驶里程</th>
+
+                <th width="8%">油耗曲线</th>
+                <th width="8%">当前状态</th>
+                <th width="11%">最后上报时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>401</td>
+                <td>回放</td>
+                <td>保洁４对</td>
+                <td>洗扫车</td>
+                <td>04:15;38</td>
+                <td>06:15;38</td>
+                <td>11.305</td>
+                <td>查看</td>
+                <td>停车</td>
+                <td>1分钟内</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="footer-controller">
+        轨迹：<div class="switchCheck">
+                  <div class="switchCheck-btn" id="showTrail"></div>
+                    <div class="switchCheck-shadow"></div>
+               </div>
+        网格：<div class="switchCheck">
+                  <div class="switchCheck-btn" id="showGrid"></div>
+                   <div class="switchCheck-shadow"></div>
+             </div>
+    </div>
+    <div class="drawBox">
+        <h4>添加区域</h4>
+        <input class="form-control" placeholder="区域名称">
+        <input class="form-control" placeholder="区域备注">
+        <select class="form-control">
+            <option>责任人</option>
+        </select>
+        <button type="button" class="btn btn-success" id="drawTrue">确定</button>
+        <button type="button" class="btn btn-default" id="drawCancle">取消</button>
+    </div>
+    <div class="drawBtn btn btn-success" style="position: absolute;right: 40px;top: 150px;width: 140px;z-index: 10">绘制区域</div>
+    <style>
+        .drawBox{
+            position: absolute;
+            z-index: 11;
+            right: 40px;
+            top: 150px;
+            width: 200px;
+            padding: 20px;
+            padding-top: 10px;
+            background: #fff;
+            text-align: center;
+            display: none;
+
+        }
+        .drawBox input ,.drawBox select{
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .drawBox button{
+          margin: 0 10px;
+            width: ;
+        }
+
+    </style>
+
+
+        <div class="modal-dialog OverlayModal  eventsOverlay" role="document" style="display: none;position: absolute;left: 100px;top: 100px;z-index: 70;width: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">上报信息</h5>
+                </div>
+                <div class="modal-body clearfix" >
+                    <div class="form-group col-sm-12">
+                        <div class="col-sm-6">
+                            <span class="OverlayModal-title">编号：</span>
+                            <span class="OverlayModal-body">3123123123</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="OverlayModal-title">处理状态：</span>
+                            <span class="OverlayModal-body">已完成</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div class="col-sm-12">
+                            <span class="OverlayModal-title">责修单位：</span>
+                            <span class="OverlayModal-body">第一装修队</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <div class="col-sm-6">
+                            <span class="OverlayModal-title">责任人：</span>
+                            <span class="OverlayModal-body">李二</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="OverlayModal-title">电话：</span>
+                            <span class="OverlayModal-body">13920873456</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                    <div class="col-sm-12">
+                        广州市天河珠江新城
+                    </div>
+                    </div>
+
+                    <div class="form-group col-sm-12" style="padding: 20px 40px">
+                      <div class="progressPoint">
+                          <div class="pointItem" style="left: -10px">
+                              <span class="pointItem-top">上传</span>
+                              <span class="pointItem-bottom">12:00</span>
+                          </div>
+                          <div class="pointItem" style="left: 46%">
+                              <span class="pointItem-top">上传</span>
+                              <span class="pointItem-bottom">12:00</span>
+                          </div>
+                          <div class="pointItem" style="right: -10px">
+                              <span class="pointItem-top">上传</span>
+                              <span class="pointItem-bottom">12:00</span>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-sm-12" >
+                        <table class="delTable">
+                            <tr>
+                                <td class="back-title" width="10%" >处理前</td>
+                                <td class="back-img" width="40%"><img src="" ></td>
+                                <td class="back-title" width="10%" >处理后</td>
+                                <td class="back-img" width="40%"><img src="" ></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+
+    <div class="peopleOverlay">
+        <div class="peopleOverlay-info media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="..."  width="50px" height="50px">
+                </a>
+            </div>
+            <div class="media-body" >
+                <h4 class="media-heading" style="margin-bottom: 10px">李四</h4>
+                 工作区域:<br>
+            </div>
+        </div>
+        <div class="peopleOverlay-msg"></div>
+    </div>
+    <style>
+
+        .peopleOverlay{
+            display:none;
+            width: 300px;
+            height: 200px;
+            position: absolute;
+            left: 200px;
+            top: 200px;
+            z-index: 11;
+            background: #9effa7;
+            padding: 20px;
+
+        }
+    </style>
+    <style>
+        .footer-controller{
+            width: 100%;
+            position: absolute;
+            z-index: 10;
+            left: 90px;
+            bottom: 90px;
+            background: #6bff74;
+            width: 220px;
+            padding: 10px 20px;
+        }
+        .switchCheck{
+            width: 40px;
+            height: 15px;
+            background: red;
+            border-radius: 10px;
+            display:inline-block;
+            vertical-align: middle;
+               position: relative;
+            border: 1px solid #ddd;
+
+        }
+
+        .switchCheck-btn {
+            width: 20px;
+            height: 20px;
+          background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            position: absolute;
+            left: -1px;
+            top: -3px;
+            z-index: 12;
+            cursor: pointer;
+        }
+        .switchCheck-shadow{
+            width: 40px;
+            height: 15px;
+            background: #fff;
+            border-radius: 10px;
+            position: absolute;
+            right: -1px;
+            top: 0;
+            z-index: 11;
+        }
+        .progressPoint{
+            width: 100%;
+            height: 10px;
+            position: relative;
+            background: #2a805a;
+        }
+        .progressPoint .pointItem{
+            height: 20px;
+            width: 20px;
+            background: #2a805a;
+            border-radius: 100%;
+            top: -5px;
+            position: absolute;
+        }
+        .progressPoint .pointItem .pointItem-top{
+            position: absolute;
+            bottom: 25px;
+            left: -10px;
+            margin: auto;
+            font-size: 13px;
+            color: #999;      width: 40px;
+            text-align: center;
+
+        } .progressPoint .pointItem .pointItem-bottom{
+              position: absolute;
+              top: 25px;
+              left: -10px;
+
+              margin: auto;
+              font-size: 13px;
+              color: #999;
+              width: 40px;
+            text-align: center;
+          }
+
+        label{
+            max-width: none;
+        }
+        .OverlayModal{
+            display: block;
+            width: 400px;
+        }
+        .OverlayModal .form-group{
+            margin-bottom: 10px;
+        }
+        .OverlayModal  .modal-body .form-group.col-sm-12{
+            padding: 0;
+        }
+        .OverlayModal .modal-header{
+            background:#D7FDE4 ;
+            padding: 10px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+        }
+        .OverlayModal .modal-header h5{
+            font-size: 16px;
+            color: #111;
+
+        }
+        .OverlayModal .modal-header button span{
+            font-size: 21px;
+            color: red;
+            opacity: 1;
+        }
+        .OverlayModal .delTable .back-title{
+            padding: 0 10px;background: #D7FDE4;
+            width: 10%;
+        }
+        .OverlayModal .delTable .back-img img{
+            width: 100px;
+            height: 100px;
+            margin-left: 5%;
+        }
+        .lableOverlay－lable{
+            padding: 4px 8px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            display: inline-block;
+            white-space: nowrap;
+            border-radius: 3px;
+        }
+    </style>
+</div>
+
+</body>
+</html>
+<script src="js/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=q2LYzxLEHgWxDXcdxoduN1fShNi5kNie">
+    //v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=q2LYzxLEHgWxDXcdxoduN1fShNi5kNie"
+    //v1.4版本及以前版本的引用方式：src="http://api.map.baidu.com/api?v=1.4&key=q2LYzxLEHgWxDXcdxoduN1fShNi5kNie&callback=initialize"
+</script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
+
+<script>
+    var icons = {
+        "car": new BMap.Icon("img/car.png", new BMap.Size(49, 32)),
+        "people": new BMap.Icon("img/people.png", new BMap.Size(22, 54)),
+        "wc": new BMap.Icon("img/wc.png", new BMap.Size(43, 40))
+    }
+    var searchRoutes=[];
+   var   areaDrawed=[];
+</script>
+<script src="js/user.js"></script>
+<script src="js/data.js"></script>
+<script>
+    var oriPoint = [];
+    var map;
+//    var geolocation = new BMap.Geolocation();
+//    geolocation.getCurrentPosition(function (r) {
+//        if (this.getStatus() == "0") {
+//            oriPoint.push(r.point.lng);
+//            oriPoint.push(r.point.lat);
+//// alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+//        }
+//        else {
+//            oriPoint.push(116.404);
+//            oriPoint.push(39.915);
+//            alert('failed' + this.getStatus());
+//        }
+////initMap();
+//    })
+   // oriPoint.push(116.404);
+   // oriPoint.push(39.915);
+    oriPoint.push(113.122055);
+    oriPoint.push(23.034799);
+    var cars=[];
+    var people=[];
+    var installation=[];
+    var events=[];
+    initMap();
+    function initMap() {
+         map = new BMap.Map("container", {enableMapClick:false});          // 创建地图实例
+        var point = new BMap.Point(oriPoint[0], oriPoint[1]);  // 创建点坐标
+        map.centerAndZoom(point, 18);                 // 初始化地图，设置中心点坐标和地图级别
+        map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+        map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+
+        addOver(map,marketFact.car)
+        addOver(map,marketFact.people)
+        addOver(map,marketFact.installation)
+        addOver(map,marketFact.events)
+//       var fact=8;
+//        var dddd=[];
+//        map.addEventListener("click",function(e){
+//            alert(e.point.lng + "," + e.point.lat);
+//            dddd.push( {lng: e.point.lng, lat: e.point.lat, id: fact})
+//            fact++;
+//            console.log(dddd)
+//        });
+
+
+
+
+
+//菜单点击
+        $(".list-li").click(function () {
+            map.clearOverlays();
+            var type = $(this).attr("data-type")
+            $("#menuType").val(type)
+            for (var i = 0; i < marketFact[type].length; i++) {
+                var markets
+                if(type=='car'){
+                    markets=marketFact.car
+                }else if(type=="people"){
+                    markets=marketFact.people
+                }else if(type=="installation"){
+                    markets=marketFact.installation
+                }else if(type=="events"){
+                    markets=marketFact.events
+                }
+
+                addOver(map,markets)
+                if($("#showTrail").hasClass("open")){
+                    if(type=="car"||type=="people")
+                    drawTrack(map,pointStar[type][i],pointFact[type][i],type,pointFact[type])
+                }
+            }
+
+        })
+        function addPoint(arr) {
+            for (var i = 0; i < 25; i ++) {
+                var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+                arr.push(point)
+            }
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        $(".dropdown li").click(function () {
+            $(this).addClass("active");
+            $(this).siblings("li").removeClass("active")
+        });
+        $(".table-close").click(function () {
+            $(".table-open").css("display","inline");
+            $(".table-close").hide()
+            $(".table-full").hide()
+            $(".table-half").hide()
+            $(".main-table").stop().animate({"top":"100%"},200)
+        })
+        $(".table-open").click(function () {
+            $(".table-close").css("display","inline");
+            $(".table-full").css("display","inline");
+            $(".table-half").hide()
+            $(".table-open").hide()
+            $(".main-table").stop().animate({"top":"50%"},200)
+        })
+        $(".table-half").click(function () {
+            $(".table-close").css("display","inline");
+            $(".table-full").css("display","inline");
+            $(".table-half").hide()
+            $(".table-open").hide()
+            $(".main-table").stop().animate({"top":"50%"},200)
+        })
+        $(".table-full").click(function () {
+            $(".table-close").css("display","inline");
+            $(".table-half").css("display","inline");
+            $(".table-full").hide()
+            $(".table-open").hide()
+            $(".main-table").stop().animate({"top":"50px"},200)
+        })
+
+
+    })
+
+   $(".switchCheck-btn").click(function () {
+       if($(this).hasClass("open")){
+           $(this).removeClass("open")
+           $(this).parent().find(".switchCheck-shadow").stop().animate({"width":"40px"},200)
+           $(this).stop().animate({"left":"-1px"},200)
+       }else{
+           $(this).addClass("open")
+           $(this).parent().find(".switchCheck-shadow").stop().animate({"width":"0px"},200)
+           $(this).stop().animate({"left":"20px"},200)
+       }
+   })
+    var trails=[];
+    var drivings=[];
+    var lushus=[];
+    var lushuArrPois={};
+
+    $("#showTrail").click(function () {
+        var end=[];
+        var star=[];
+
+        var type=$("#menuType").val()
+        if($(this).hasClass("open")){
+            if(type=='car'){
+                end=pointFact.car
+                star=pointStar.car
+            }else if(type=="people"){
+                end=pointFact.people
+                star=pointStar.people
+            }else if(type=="installation"){
+                $(this).removeClass("open")
+                $(this).parent().find(".switchCheck-shadow").stop().animate({"width":"40px"},200)
+                $(this).stop().animate({"left":"-1px"},200)
+                alert ("该选项没有轨迹")
+                return
+            }else if(type=="events"){
+                $(this).removeClass("open")
+                $(this).parent().find(".switchCheck-shadow").stop().animate({"width":"40px"},200)
+                $(this).stop().animate({"left":"-1px"},200)
+                alert ("该选项没有轨迹")
+                return
+            }else{
+                $(this).removeClass("open")
+                $(this).parent().find(".switchCheck-shadow").stop().animate({"width":"40px"},200)
+                $(this).stop().animate({"left":"-1px"},200)
+                alert ("该选项没有轨迹")
+
+                return
+            }
+            for(var i=0;i<end.length;i++){
+                let index=i;
+                drawTrack(map,star[i],end[i],type)
+            }
+        }else{
+            delRoute(map)
+        }
+    })
+    var mapClickf="",nowLine=[],nowArea=""
+    $("#showGrid").click(function () {
+        if($(this).hasClass("open")){
+            map.addEventListener("click", mapClickf,false)
+            $(".drawBtn").show();
+            areaDrawed=[]
+            for(var i=0;i<areaFact.length;i++){
+               drawArea(map,areaFact[i])}
+        }else{
+            $(".drawBtn").hide();
+            $(".drawBox").hide();
+            if(mapClickf!=""){
+                map.removeEventListener("click", mapClickf,false)
+                mapClickf=""
+            }
+            areaDrawed.forEach(function (area) {
+                map.removeOverlay(area.polygon);
+                map.removeOverlay(area.lableO);
+            })
+        }
+    })
+
+
+    $(".drawBtn").click(function () {
+       $(".drawBox").show();
+        if(mapClickf==""){
+            var endPoint="";
+            var xuxian="";
+            var linePionts=[];
+            mapClickf= function mapClick(e) {
+                //alert(e.point.lng + ", " + e.point.lat);
+                var nowPoint= e.point;
+                if(endPoint==""){
+                    endPoint=nowPoint
+                }else{
+                    var polyline = new BMap.Polyline([
+                        endPoint,nowPoint
+                    ], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});
+                    endPoint=nowPoint;
+                    map.addOverlay(polyline);
+                    nowLine.push(nowPoint)
+                }
+                linePionts.push(nowPoint);
+
+
+
+                if(linePionts.length>4){
+                    var polygon = new BMap.Polygon(linePionts, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});  //创建多边形
+                    map.addOverlay(polygon);
+                    nowArea=polygon
+                    linePionts=[]
+                    endPoint="";
+                }
+
+            }
+        }
+
+        map.addEventListener("click", mapClickf,false)
+    })
+    $("#drawCancle").click(function () {
+        $(".drawBox").hide();
+        if(mapClickf!=""){
+            map.removeEventListener("click", mapClickf,false)
+            mapClickf=""
+        }
+       // map.removeOverlay(nowArea);
+       // delOver(map,nowLine)
+       // removeOverlayList(nowLine)
+    })
+    function removeOverlayList(arr) {
+        for(var i=0;i<arr.length;i++){
+            map.removeOverlay(arr[i]);
+        }
+    }
+</script>
+
+
+

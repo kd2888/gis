@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/data.js"></script>
+    <style>
+        .form-control{
+            color: #313131;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid" style="padding-top: 30px">
+    <div class="row-fluid">
+        <div class="span12">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="table.html">索引信息</a>
+                </li>
+                <li>
+                    <a href="all.html">全局展示</a>
+                </li>
+                <li class=" navbar-right" style="padding-right: 40px"><button onclick="window.location.href='table.html'" class="btn btn-sm btn-default">返回</button></li>
+            </ul>
+            <ol class="breadcrumb" style="margin: 20px 0">
+                <li>...</li>
+                <li>...</li>
+                <li class="active">...</li>
+            </ol>
+           <div class="">
+               <form class="form-horizontal">
+                   <div class="form-group">
+                       <label  class="col-sm-2 control-label">分项描述</label>
+                       <div class="col-sm-8">
+                           <input type="email" class="form-control" id="name" placeholder="分项描述" name="name">
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label  class="col-sm-2 control-label">负责人</label>
+                       <div class="col-sm-8">
+                           <input type="email" class="form-control" id="leared" placeholder="负责人" name="leader">
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label  class="col-sm-2 control-label">参与人</label>
+                       <div class="col-sm-8">
+                           <input type="text" class="form-control" id="jioner" placeholder="参与人"  name="participant">
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label class="col-sm-2 control-label">工作任务名称</label>
+                       <div class="col-sm-8">
+                           <input type="text" class="form-control" id="workname" placeholder="工作任务名称"  name="taskName">
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label   class="col-sm-2 control-label">进度（%）</label>
+                       <div class="col-sm-8">
+                           <input type="text" class="form-control" id="progress" placeholder="填写0~100即可"  name="progress">
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label   class="col-sm-2 control-label">状态</label>
+                       <div class="col-sm-8">
+                           <input type="text" class="form-control" id="attitude" placeholder="状态"  name="state">
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label   class="col-sm-2 control-label">上周工作汇总</label>
+                       <div class="col-sm-8">
+                           <textarea class="form-control" rows="3" id="lastWeek"  placeholder="上周工作汇总"  name="lastWeekWork"></textarea>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label  class="col-sm-2 control-label">本周工作计划</label>
+                       <div class="col-sm-8">
+                           <textarea class="form-control" rows="3" id="nowWeek" placeholder="本周工作计划"  name="thisWeekWork"></textarea>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label   class="col-sm-2 control-label">备注</label>
+                       <div class="col-sm-8">
+                           <input type="text" class="form-control" id="remark" placeholder="备注"  name="remark">
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label   class="col-sm-2 control-label">输出结果</label>
+                       <div class="col-sm-8">
+                           <textarea class="form-control" rows="3" id="result" placeholder="输出结果"  name="resulrt"></textarea>
+                       </div>
+                   </div>
+                   <div class="form-group" style="margin: 20px 60px">
+                       <label  class="col-sm-2 control-label"></label>
+                       <div class="col-sm-8">
+                           <button type="button" class="btn  btn-primary" style="margin-right: 30px">保存</button>
+
+                           <button type="button" class="btn  btn-default cancle-btn">取消</button>
+                       </div>
+                   </div>
+
+               </form>
+           </div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1);
+        return r.split("=")[1]
+
+    }
+    $(function () {
+        var id=GetQueryString(id);
+        var itemData={};
+        for(var i=0;i<data.length;i++) {
+            var content =data[i].content;
+            for (var j = 0; j < content.length; j++) {
+                var item=content[j].item
+                for (var k = 0; k < item.length; k++) {
+                   if(item[k].itemId==id){
+                       itemData=item[k];
+                       $(".breadcrumb").html('<li>'+data[i].name+'</li><li>'+content[j].contentName+'</li><li class="active">'+item[k].name+'</li>')
+                   }
+                }
+
+            }
+        }
+       $("form input, form textarea").each(function () {
+           var name=$(this).attr("name")
+           if(itemData[name]){
+               $(this).val(itemData[name])
+           }
+
+       })
+        $(".cancle-btn").click(function () {
+                var result = confirm('是否确认退出编辑');
+                if(result){
+                   window.location.href="table.html"
+                }
+        })
+    })
+</script>
+</body>
+</html>

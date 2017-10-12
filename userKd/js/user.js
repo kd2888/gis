@@ -1,14 +1,26 @@
 //添加点
-function addMarker(point,type,map){
+function addMarker(point,type,map,i){
     if(type=="car"){
         var myIcon = icons.car
+        var label = new BMap.Label("粤A31002"+i,{offset:new BMap.Size(-15,-30)});
     }else if(type=="wc"){
-        var myIcon = icons.wc
+        var myIcon = icons.wc;
+        var label = new BMap.Label("厕所"+i,{offset:new BMap.Size(0,-30)});
     }else if(type=="people"){
-        var myIcon = icons.people
-    }
+        var myIcon = icons.people;
+        var label = new BMap.Label("清洁员"+i,{offset:new BMap.Size(-15,-30)});
+    }else{
+        var label = new BMap.Label("事件"+i,{offset:new BMap.Size( -10,-30)});       }
 
+    label.setStyle({                                   //给label设置样式，任意的CSS都是可以的
+        border: "1px solid #000",
+        maxWidth: "none",
+        padding:"2px 5px",
+
+
+    });
     var marker = new BMap.Marker(point,{icon:myIcon});
+    marker.setLabel(label);
     map.addOverlay(marker);
 }
 // 编写自定义函数,创建标注
@@ -21,6 +33,8 @@ ComplexCustomOverlay.prototype = new BMap.Overlay();
 ComplexCustomOverlay.prototype.initialize = function(map){
     this._map = map;
     var div = this._div = document.createElement("div");
+    div.className="test";
+    div.id="sDASDAD"
     div.style.position = "absolute";
     div.style.zIndex = BMap.Overlay.getZIndex(this._point.lat);
     div.style.backgroundColor = "rgba(0,0,0,0.6)";

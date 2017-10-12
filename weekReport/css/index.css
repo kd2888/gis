@@ -1,0 +1,365 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-family: "Microsoft YaHei";
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+}
+label{
+    max-width: none;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+/*main-top的样式*/
+.main-top {
+    width: 600px;
+    height: 45px;
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    line-height: 40px;
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
+    background: url("../img/head.png") no-repeat;
+    background-size: 100% 100%;
+    /* 一些不支持背景渐变的浏览器 */
+    /*background:-moz-linear-gradient(top, #fff,#eee );*/
+    /*background:-webkit-gradient(linear, 0 0, 0 bottom, from(#fff), to(#eee ));*/
+    /*background:-o-linear-gradient(top, #fff, #eee );*/
+}
+
+.main-top button {
+    width: 140px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 30px;
+    border: 0;
+    border-radius: 4px;
+    color: #fff;
+    background: rgb(34, 136, 110); /* 一些不支持背景渐变的浏览器 */
+    background: -moz-linear-gradient(top, #43B89E, #10684F);
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#43B89E), to(#10684F));
+    background: -o-linear-gradient(top, #43B89E, #10684F);
+    vertical-align: middle;
+    margin: 0 10px;
+}
+/*main-top的样式结束*/
+/*main-left的样式*/
+.main-left {
+    width: 90px;
+    height: 436px;
+    position: absolute;
+    z-index: 5;
+    top: 70px;
+    padding: 43px 0 0 10px;
+    background: url("../img/left.png") no-repeat;
+}
+
+.main-left ul {
+    width: 100%;
+}
+
+.main-left ul li {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 10px;
+
+}
+
+.main-left ul li img {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+
+}
+
+.main-left ul li.open .hover-show {
+    display: block;
+
+}
+
+.hover-show {
+    position: absolute;
+    top: 0;
+    left: 90px;
+    display: none;
+    width: 857px;
+    height: 419px;
+    padding-left: 20px;
+}
+
+.hover-show_box {
+    width: 817px;
+    height: 419px;
+    background: #fff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.50);
+
+}
+
+.hover-show img {
+    width: 772px !important;
+    height: 336px !important;
+    margin: auto;
+    margin-top: 40px;
+
+}
+/*main-left的样式结束*/
+/*main-table 的样式*/
+.main-table {
+    position: absolute;
+    z-index: 50000;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    margin-top: -50px;
+    background: #fff;
+    height: 100%;
+
+}
+
+
+
+.table-controller {
+    padding: 20px 20px 0 20px;
+    height: 54px;
+}
+
+.table-control_title {
+    line-height: 34px;
+    float: left;
+    width: 20%;
+}
+
+.table-controller select {
+    height: 34px;
+    float: left;
+    width: 80%;
+
+}
+
+.input-group {
+    float: left;
+    width: 80%;
+}
+
+.table-head {
+    height: 50px;
+    line-height: 50px;
+    background: #28A687;
+    color: #fff;
+    text-align: right;
+    padding-right: 20px;
+}
+
+
+.table-swith{
+    cursor: pointer;
+    margin-left: 20px;
+    display: none;
+}
+.table-open{
+    display: inline;
+}
+
+.table thead {
+    background: #eee;
+}
+
+.table th, .table td {
+    text-align: center;
+}
+
+.table input[type=checkbox] {
+    width: 15px;
+    height: 15px;
+}
+/*main-table 的样式结束*/
+/*main-map  的样式*/
+.main-map {
+    width: 100%;
+    height: 100%;
+    /*background: url("img/bg2.png") no-repeat;*/
+    background: #fff;
+    background-size: 100% 100%;
+    /*opacity: 0.47;*/
+}
+/*main-map  的样式结束*/
+/*footer-controller 的样式*/
+.footer-controller{
+    width: 100%;
+    position: absolute;
+    z-index: 10;
+    left: 90px;
+    bottom: 90px;
+    background: #6bff74;
+    width: 220px;
+    padding: 10px 20px;
+}
+.switchCheck{
+    width: 40px;
+    height: 15px;
+    background: red;
+    border-radius: 10px;
+    display:inline-block;
+    vertical-align: middle;
+    position: relative;
+    border: 1px solid #ddd;
+
+}
+
+.switchCheck-btn {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    position: absolute;
+    left: -1px;
+    top: -3px;
+    z-index: 12;
+    cursor: pointer;
+}
+.switchCheck-shadow{
+    width: 40px;
+    height: 15px;
+    background: #fff;
+    border-radius: 10px;
+    position: absolute;
+    right: -1px;
+    top: 0;
+    z-index: 11;
+}
+/*footer-controller 的样式结束*/
+/*drawBox 的样式*/
+.drawBox{
+    position: absolute;
+    z-index: 11;
+    right: 40px;
+    top: 150px;
+    width: 200px;
+    padding: 20px;
+    padding-top: 10px;
+    background: #fff;
+    text-align: center;
+    display: none;
+
+}
+.drawBox input ,.drawBox select{
+    margin-bottom: 10px;
+    text-align: left;
+}
+.drawBox button {
+    margin: 0 10px;
+}
+.drawBtn{
+    position: absolute;right: 40px;top: 150px;width: 140px;z-index: 10;display: none
+}
+/*drawBox 的样式结束*/
+
+/*OverlayModalde的样式*/
+.OverlayModal{
+    display: block;
+    width: 400px;
+}
+.OverlayModal .form-group{
+    margin-bottom: 10px;
+}
+.OverlayModal  .modal-body .form-group.col-sm-12{
+    padding: 0;
+}
+.OverlayModal .modal-header{
+    background:#D7FDE4 ;
+    padding: 10px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.OverlayModal .modal-header h5{
+    font-size: 16px;
+    color: #111;
+
+}
+.OverlayModal .modal-header button span{
+    font-size: 21px;
+    color: red;
+    opacity: 1;
+}
+.OverlayModal .delTable .back-title{
+    padding: 0 10px;background: #D7FDE4;
+    width: 10%;
+}
+.OverlayModal .delTable .back-img img{
+    width: 100px;
+    height: 100px;
+    margin-left: 5%;
+}
+.progressPoint{
+    width: 100%;
+    height: 10px;
+    position: relative;
+    background: #2a805a;
+}
+.progressPoint .pointItem{
+    height: 20px;
+    width: 20px;
+    background: #2a805a;
+    border-radius: 100%;
+    top: -5px;
+    position: absolute;
+}
+.progressPoint .pointItem .pointItem-top{
+    position: absolute;
+    bottom: 25px;
+    left: -10px;
+    margin: auto;
+    font-size: 13px;
+    color: #999;      width: 40px;
+    text-align: center;
+
+} .progressPoint .pointItem .pointItem-bottom{
+      position: absolute;
+      top: 25px;
+      left: -10px;
+
+      margin: auto;
+      font-size: 13px;
+      color: #999;
+      width: 40px;
+      text-align: center;
+  }
+.OverlayModal .showBack-box{
+    margin-left: 20px;
+    /* padding-top: 10px; */
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+      /*OverlayModalde的样式结束*/
+
+/*地图覆盖样式*/
+.lableOverlay－lable{
+    padding: 4px 8px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    display: inline-block;
+    white-space: nowrap;
+    border-radius: 3px;
+}
+/*地图覆盖样式结束*/

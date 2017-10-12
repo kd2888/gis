@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/data.js"></script>
+</head>
+<body>
+<style>
+    .table>tbody>tr>td{
+        vertical-align: middle
+    }
+    .table>tbody>tr>th{
+        vertical-align: middle;
+        text-align: center;
+    }
+    .table>tbody>tr.important{
+        background: #f2dede;
+    }
+    .table>tbody>tr .table-name {
+        background: #fff;
+    }
+
+</style>
+<div class="container-fluid" style="padding-top: 30px">
+    <div class="row-fluid">
+        <div class="span12">
+            <ul class="nav nav-tabs">
+                <li >
+                    <a href="table.html">索引信息</a>
+                </li >
+                <li class="active">
+                    <a href="all.html">全局展示</a>
+                </li>
+            </ul>
+            <div class="page-header">
+                <h1>
+                    <small><strong>全局信息展示</strong></small>
+                </h1>
+            </div>
+            <table class="table table-bordered" >
+                <thead>
+                <tr>
+                    <th width="3%">序号</th>
+                    <th width="3%">工作名称</th>
+                    <th width="7%">内容描述</th>
+                    <th width="13%">分项描述</th>
+                    <th width="4%">负责人</th>
+                    <th width="4%">参与人</th>
+                    <th width="4%">工作任务名称</th>
+                    <th width="4%">进度（%）</th>
+                    <th width="5%">状态</th>
+                    <th width="21%">上周工作汇总</th>
+                    <th width="21%">本周工作计划</th>
+                    <th width="3%">备注</th>
+                    <th width="8%">输出结果</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--<tr class="important">-->
+                    <!--<td  rowspan="5" class="table-name">1</td>-->
+                    <!--<td rowspan="5" class="table-name">业务管理</td>-->
+                    <!--<td rowspan="2" class="table-name">环卫业务战略及责权利体系</td>-->
+                    <!--<td >业务战略体系</td>-->
+                    <!--<td>吴谷</td>-->
+                    <!--<td>兴海</td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td>跟进侨银业务及项目合作方式、事业部业务矩阵分解量化</td>-->
+                    <!--<td>事业部业务矩阵分解量化</td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+
+                <!--</tr>-->
+                <!--<tr >-->
+                    <!--<td >工作管理方式</td>-->
+                    <!--<td>吴谷</td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td>常态：总体计划表（每周更新）、侨银项目跟进表（每周更新）、公司会议（每两周一次）</td>-->
+                    <!--<td>"1、项目总体表功能，展现、跟踪每个人工作的全貌、进度及状态；<br>2、重申周工作计划，周六前邮件或微信发送收集人统筹汇总；；<br>3、各人领的任务，自觉跟踪到底、有始有终。"</td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td rowspan="3" class="table-name">过程管控</td>-->
+                    <!--<td>人员招收计划</td>-->
+                    <!--<td>吴谷</td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td>组织架构终稿</td>-->
+                    <!--<td>1、组织架构终稿<br>-->
+                        <!--2、技术支持经理JD-->
+                    <!--</td>-->
+
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>建立资料积累、调研表单、项目执行的工作方法</td>-->
+                    <!--<td>粤辉</td>-->
+                    <!--<td>兴海、天敬</td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td>周工作计划，每周六前发邮件给收集人，再由收集人汇总整理</td>-->
+                    <!--<td></td>-->
+                    <!--<td>每周末更新</td>-->
+                    <!--<td>1、组织架构终稿<br>-->
+                        <!--2、技术支持经理JD<br>-->
+                        <!--3、项目管理表<br>-->
+                        <!--4、项目销售进度跟进表-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td>分享机制、版本管理</td>-->
+                    <!--<td>龙泉</td>-->
+                    <!--<td>粤辉、兴海、天敬</td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td></td>-->
+                    <!--<td>相关资料同步，改用svn服务器</td>-->
+                    <!--<td>对svn服务器文档继续整理及更新</td>-->
+                    <!--<td>每周末更新</td>-->
+                    <!--<td>分享机制、版本管理、版本更新</td>-->
+                <!--</tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var html=''
+        console.log(data)
+        var impor=[];
+        for(var i=0;i<data.length;i++){
+            var content =data[i].content;
+            var count=0;
+            console.log(content)
+            for(var j=0;j<content.length;j++){
+                var item=content[j].item
+                if(j==0){
+                    html+='<td  rowspan="'+item.length+'" class="table-name">'+content[j].contentName+'</td>'
+                }else{
+                    html+='<tr ><td  rowspan="'+item.length+'" class="table-name">'+content[j].contentName+'</td>'
+                }
+                count+=item.length;
+                for(var k=0;k<item.length;k++){
+                    if(item[k].isImportant){
+                        impor.push(k+(count-item.length))
+                    }
+                    if(k==0){
+                        html+='<td>'+item[k].name+'</td>'
+                    }else{
+                        html+='<tr><td>'+item[k].name+'</td>'
+                    }
+
+                    html+='<td>'+item[k].leader+'</td>'
+                    html+='<td>'+item[k].participant+'</td>'
+                    html+='<td>'+item[k].taskName+'</td>'
+                    html+='<td>'+item[k].progress+'</td>'
+                    html+='<td>'+item[k].state+'</td>'
+                    html+='<td>'+formate(item[k].lastWeekWork)+'</td>'
+                    html+='<td>'+formate(item[k].thisWeekWork)+'</td>'
+                    html+='<td>'+item[k].remark+'</td>'
+                    html+='<td>'+formate(item[k].resulrt)+'</td>'
+                   // html+='<td>'+item[k].isImportant+'</td>'
+
+                }
+
+            }
+            html='<tr ><td class="table-name" rowspan="'+count+'">'+data[i].id+'</td><td class="table-name" rowspan="'+count+'">'+data[i].name+'</td>'+html;
+        }
+        $(".table tbody").html(html);
+
+        for(var i=0;i<impor.length;i++){
+             $(".table tbody tr").eq(impor[i]).addClass("important")
+        }
+    })
+    function formate(mystr) {
+        mystr = mystr.replace(/\n\r/g,"<br>");
+        mystr = mystr.replace(/\n/g,"<br>")
+        mystr = mystr.replace(/\r/g,"<br>")
+        mystr = mystr.replace(/\t/g,"　　");
+        return mystr;
+    }
+</script>
+</body>
+</html>
