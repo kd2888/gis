@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <script src="js/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
     <style>
         .table>tbody>tr>td{
             vertical-align: middle
@@ -37,25 +37,37 @@
                 <li>
                     <a href="all.html">全局展示</a>
                 </li>
+                <li class="dropdown pull-right" style="width: 160px;text-align: right;background-color:#eee">
+                    <a href="#" class="dropdown-toggle" style="padding-left: 0" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="urerName">addasdasd</span>  <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javvscript:void(0);" id="changePaw">修改密码</a></li>
+                        <li><a href="javvscript:void(0);" id="loginOut">退出</a></li>
+                    </ul>
+                </li>
             </ul>
             <div class="page-header">
                 <h1>
                     <small><strong>索引信息展示</strong></small>
                 </h1>
+
             </div>
+            <div class="addRecords-box"  style="margin-bottom: 20px"><button class="addRecords btn btn-primary">+ 新增</button></div>
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th width="20">
+                    <th width="20%">
                         工作名称
                     </th>
-                    <th width="30">
+                    <th width="25%">
                         内容描述
                     </th>
-                    <th width="30">
+                    <th width="25%">
                         分项描述
                     </th>
-                    <th width="20">
+                    <th width="10%">
+                        负责人
+                    </th>
+                    <th width="20%">
                         操作
                     </th>
                 </tr>
@@ -105,67 +117,467 @@
     </div>
 </div>
 </div>
+<style>
+    .form-group.choose-box{
+        margin-bottom: 0px;
+    }
+    .form-group.add-box{
+        padding-left: 30px;
+    }
+   .addModal .form-group select{
+        display: none;
+    }
+</style>
+<!--弹出窗-->
+<div class="addModal modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 600px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新增记录</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="form-group col-sm-12 choose-box">
+                    <label  class="col-sm-3 control-label">工作名称</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" name="work"  value="input" checked> 新增
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="work"  value="select"> 选择
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-12 form-group add-box" >
+                    <input class="form-control workInput" placeholder="新增工作名称">
+                    <select class="form-control workSelect">
+                        <option value="" >选择工作名称</option>
+                    </select>
+                </div>
+                <div class="form-group col-sm-12 choose-box">
+                    <label  class="col-sm-3 control-label">内容描述</label>
+                    <div class="col-sm-9">
+                        <label class="radio-inline">
+                            <input type="radio" name="content"  value="input" checked> 新增
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="content"  value="select"> 选择
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-12 form-group add-box" >
+                    <input class="form-control contentInput" placeholder="新增内容描述">
+                    <select class="form-control contentSelect">
+                        <option>选择内容描述</option>
+                    </select>
+                </div>
+                <div class="form-group col-sm-12 choose-box">
+                    <label  class="col-sm-3 control-label">分项描述</label>
+                </div>
+                <div class="col-sm-12 form-group add-box" >
+                    <input class="form-control itemInput"  placeholder="新增分项描述">
+                </div>
+                <div class="leader-box" style="display: none">
+                    <div class="form-group col-sm-12 choose-box">
+                         <label  class="col-sm-3 control-label">负责人</label>
+                    </div>
+                    <div class="col-sm-12 form-group add-box" >
+                          <select class="form-control leaderSelect" style="display: inline-block">
+                              <option value="">请选择负责人</option>
+                          </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary addSure">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<style>
+    .loading{
+        position: fixed;
+        z-index: 100000;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(225,225,225,0.4);
+    }
+    .loading img{
+        position: absolute;  display: block;  z-index: 100001;  left: 0;  top: 0;  right: 0;  bottom: 0;  margin: auto;
+    }
+</style>
 <script>
-    $(function () {
-        var html=''
-        var impor=[];
-        console.log(data)
-        for(var i=0;i<data.length;i++){
-               var content =data[i].content;
-               var count=0;
-               console.log(content)
-             for(var j=0;j<content.length;j++){
-                    var item=content[j].item
-                    console.log(item)
-                    count+=item.length;
-                 if(j==0){
-                     html+='<td  rowspan="'+item.length+'" class="table-name">'+content[j].contentName+'</td>'
-                 }else{
-                     html+='<tr ><td  rowspan="'+item.length+'" class="table-name">'+content[j].contentName+'</td>'
-                 }
-                   for(var k=0;k<item.length;k++){
-
-                       if(k==0){
-                           html+='<td>'+item[k].name+'</td>'
-                       }else{
-                           html+='<tr><td>'+item[k].name+'</td>'
-                       }
-                       if(item[k].isImportant){
-                           impor.push(k+(count-item.length))
-                           html+='<td data-id="'+item[k].itemId+'"><a href="javascript:void(0);" class="action point-action">取消重点</a> <a href="javascript:void(0);" class="action edit-action">编辑</a></td></tr>'
-                       }else{
-                           html+='<td data-id="'+item[k].itemId+'"><a href="javascript:void(0);" class="action point-action">选为重点</a> <a href="javascript:void(0);" class="action edit-action">编辑</a></td></tr>'
-                       }
-
-                   }
-
-             }
-             html='<tr ><td rowspan="'+count+'" class="table-name">'+data[i].name+'</td>'+html;
-        }
-        $(".table tbody").html(html)
-        for(var i=0;i<impor.length;i++){
-            $(".table tbody tr").eq(impor[i]).addClass("important")
-        }
-        initAction()
-
+    //获得权限
+    var role=localStorage.getItem("role");
+    //初始化负责人
+    if(role=="2"){
+        $(".leader-box").show();
+        $.post("php/getPeople.php",{},function(result){
+            result=reconvert(result)
+            result=result.split("&")
+            console.log(result)
+            var items=[];
+            for(var i=0;i<(result.length-1);i++){
+                items.push($.parseJSON(result[i]))
+            }
+           var html='<option value="">请选择负责人</option>'
+            for(var i=0;i<items.length;i++){
+                html+='<option value="'+items[i].name+'">'+items[i].remark+'</option>'
+            }
+            $(".leaderSelect").html(html);
+        });
+    }
+    //缓存总数据
+    var allDAta="";
+    $(".addRecords").click(function () {
+        $(".addModal").modal("show")
     })
+    //新增弹窗 单选点击事件
+    $(".addModal .choose-box input:radio").click(function () {
+        var val=$(this).val();
+        var box= $(this).parents(".choose-box").next();
+        if(val=="input"){
+            if($(this).attr("name")=="work"){
+                $(".addModal").find("input").show();
+                $(".addModal").find("select").hide();
+                $(".addModal [value='select']").attr("checked",false)
+                $(".addModal [value='input']").prop("checked",true)
+            }else{
+                $(".addModal [name='work']:checked").val()
+                box.find("input").show();
+                box.find("select").hide();
+            }
+
+        }else{
+            if($(this).attr("name")=="content"){
+                var type=$(".addModal [name='work']:checked").val();
+                if(type=="input"){
+                    newAlert("工作名称不是选择的")
+                    $(".addModal [name='content'][value='input']").prop("checked",true)
+                }else{
+                    var id=$(".workSelect").val()
+                    if(id==""){
+                        newAlert("请先选择工作名称")
+                        $(".addModal [name='content'][value='input']").prop("checked",true)
+                    }else{
+                        box.find("input").hide();
+                        box.find("select").show();
+                    }
+                }
+            }else{
+                box.find("input").hide();
+                box.find("select").show();
+            }
+
+        }
+    })
+    //新增弹窗 提交新增信息
+    $(".addModal .addSure").click(function () {
+        var workType=$(".addModal [name='work']:checked").val();
+        var contentType=$(".addModal [name='content']:checked").val();
+        var itemval=$(".itemInput").val();
+        var workval,workName,workId,itemId;
+        var contentval,contentName,contentId;
+
+        if(workType=="input"){
+            workval= $(".workInput").val();
+            workName=workval;
+            workId=$(".workSelect option").length+"";
+        }else{
+            workval= $(".workSelect").val();
+            workId=workval;
+          $(".workSelect option").each(function () {
+              if(workval==$(this).attr("value")){
+                  workName=$(this).html()
+              }
+          });
+        }
+        if(contentType=="input"){
+            contentval= $(".contentInput").val();
+            contentName=contentval;
+            if(workType=="input"){
+                contentId="1";
+            }else{
+                contentId=$(".contentSelect option").length+"";
+            }
+        }else{
+            contentval= $(".contentSelect").val();
+            contentId=contentval;
+            $(".contentSelect option").each(function () {
+                if(contentId==$(this).attr("value")){
+                    contentName=$(this).html()
+                }
+            });
+        }
+        if(role=="2"){
+            var leaderId=$(".leaderSelect").val();
+            var leader=$(".leaderSelect option:selected").html();
+        }else{
+            var leaderId=localStorage.getItem("name")
+            var leader=localStorage.getItem("remark");
+        }
+        if(workval==""){
+            newAlert("请填写或选择工作名称")
+            return
+        }
+        if(contentval==""){
+            newAlert("请填写或选择内容描述")
+            return
+        }
+        if(itemval==""){
+            newAlert("请填写分项描述")
+            return
+        }
+        if(leaderId==""){
+            newAlert("请选择负责人")
+            return
+        }
+        itemId=$("table tbody tr").length+1+"";
+        var items={"itemId":itemId,"itemName":itemval,"contentId":contentId,"contentName":contentName,"workId":workId,"workName":workName,"leader":leader,"leaderId":leaderId}
+        console.log(items)
+        $.post("php/insert.php",{"items":items},function(result){
+           console.log(result)
+            if(result=="1"){
+                getData();
+                //newAlert("新增成功")
+
+                $(".addModal").modal("hide")
+            }else{
+                closeLoad();
+                newAlert("新增失败")
+            }
+        })
+    });
+    //工作，内容二级联动
+  $(".workSelect").change(function () {
+      var id=$(this).val();
+      var html=' <option value="">选择内容描述</option>'
+      if(id!=""){
+          for(var i=0;i<allDAta.length;i++){
+              if(id==allDAta[i].workId){
+                  var content=allDAta[i].content
+                  for(var j=0;j<content.length;j++){
+                      html+=' <option value="'+content[j].contentId+'">'+content[j].contentName+'</option>'
+                  }
+
+              }
+          }
+      }
+      $(".contentSelect").html(html)
+  })
+    //获取全局数据
+    getData();
+   function getData() {
+       openLoad();
+       $.post("php/getAll.php",{},function(result){
+           closeLoad();
+           result=reconvert(result)
+           result=result.split("&")
+           console.log(result)
+           var items=[];
+           for(var i=0;i<(result.length-1);i++){
+               items.push($.parseJSON(result[i]))
+           }
+           // console.log(items)
+           // console.log(changeData(items))
+           allDAta=changeData(items)
+           changeDom(allDAta)
+
+       });
+   }
+
+
+     //初始化点击事件
     function initAction() {
         $(".point-action").unbind("click").bind("click",function () {
+            var id=$(this).parent().attr("data-id");
             if($(this).parents("tr").hasClass("important")){
                 $(this).parents("tr").removeClass("important")
                 $(this).html("选为重点")
-
+                changePoint(id,"0")
             }else{
                 $(this).parents("tr").addClass("important")
                 $(this).html("取消重点")
+                changePoint(id,"1")
             }
         })
         $(".edit-action").unbind("click").bind("click",function () {
            var id=$(this).parent().attr("data-id")
             window.location.href="edit.html?id="+id
         })
-    }
+        $(".cancle-action").unbind("click").bind("click",function () {
+            var id=$(this).parent().attr("data-id")
+            var items={"itemId":id}
+            newAlert("确认删除吗",function () {
+                openLoad();
+                $.post("php/delete.php",{"items":items},function(result){
+                    console.log(result);
+                    if(result=="1"){
+                        getData()
+                        closeLoad();
+                       // newAlert("删除成功")
+                    }else{
+                        closeLoad();
+                        newAlert("删除失败")
+                    }
+                })
+            })
 
+        })
+    }
+    //修改重点状态
+  function changePoint(id,type) {
+        var items={"itemId":id,"isImportant":type}
+      $.post("php/updata.php",{"items":items},function(result){
+          if(result=="1"){
+             // newAlert("修改成功")
+          }else{
+              newAlert("修改失败")
+          }
+      })
+  }
+    //中文转码
+ function reconvert(str){
+     str = str.replace(/(\\u)(\w{1,4})/gi,function($0){
+         return (String.fromCharCode(parseInt((escape($0).replace(/(%5Cu)(\w{1,4})/g,"$2")),16)));
+     });
+     str = str.replace(/(&#x)(\w{1,4});/gi,function($0){
+         return String.fromCharCode(parseInt(escape($0).replace(/(%26%23x)(\w{1,4})(%3B)/g,"$2"),16));
+     });
+     str = str.replace(/(&#)(\d{1,6});/gi,function($0){
+         return String.fromCharCode(parseInt(escape($0).replace(/(%26%23)(\d{1,6})(%3B)/g,"$2")));
+     });
+
+     return str;
+ }
+ //php数据转js
+ function changeData(data) {
+     var newData=[];
+     var workId="";
+     var contentId=""
+     for(var i=0;i<data.length;i++){
+         if(data[i].workId!=workId){
+             workId=data[i].workId;
+             contentId=data[i].contentId
+             newData.push({"workId":data[i].workId,"workName":data[i].workName,"content":[{"contentId":data[i].contentId,"contentName":data[i].contentName,"item":[{
+                 itemId: data[i].itemId,
+                 itemName: data[i].itemName,
+                 leaderId:data[i].leaderId,
+                 leader: data[i].leader,
+                 participant: data[i].participant,
+                 taskName: data[i].taskName,
+                 progress: data[i].progress,
+                 state: data[i].state,
+                 lastWeekWork: data[i].lastWeekWork,
+                 thisWeekWork:data[i].thisWeekWork,
+                 remark: data[i].remark,
+                 resulrt: data[i].resulrt,
+                 isImportant:data[i].isImportant
+             }]}]})
+         }else{
+             var workNum=newData.length-1;
+             if(data[i].contentId!=contentId){
+                 contentId=data[i].contentId
+                 newData[workNum].content.push({"contentId":data[i].contentId,"contentName":data[i].contentName,"item":[{
+                     itemId: data[i].itemId,
+                     itemName: data[i].itemName,
+                     leaderId:data[i].leaderId,
+                     leader: data[i].leader,
+                     participant: data[i].participant,
+                     taskName: data[i].taskName,
+                     progress: data[i].progress,
+                     state: data[i].state,
+                     lastWeekWork: data[i].lastWeekWork,
+                     thisWeekWork:data[i].thisWeekWork,
+                     remark: data[i].remark,
+                     resulrt: data[i].resulrt,
+                     isImportant:data[i].isImportant
+                 }]})
+             }else{
+                var contentNum=newData[workNum].content.length-1;
+                 newData[workNum].content[contentNum].item.push({
+                     itemId: data[i].itemId,
+                     itemName: data[i].itemName,
+                     leaderId:data[i].leaderId,
+                     leader: data[i].leader,
+                     participant: data[i].participant,
+                     taskName: data[i].taskName,
+                     progress: data[i].progress,
+                     state: data[i].state,
+                     lastWeekWork: data[i].lastWeekWork,
+                     thisWeekWork:data[i].thisWeekWork,
+                     remark: data[i].remark,
+                     resulrt: data[i].resulrt,
+                     isImportant:data[i].isImportant
+                 })
+             }
+
+         }
+     }
+     return newData
+ }
+ //添加到页面上
+ function changeDom(data) {
+     var allHtml=''
+     var impor=[];
+     var option=' <option value="" >选择工作名称</option>'
+     console.log(data)
+     for(var i=0;i<data.length;i++){
+         option+=' <option value="'+data[i].workId+'" >'+data[i].workName+'</option>'
+         var html=''
+         var content =data[i].content;
+         var count=0;
+         console.log(content)
+         for(var j=0;j<content.length;j++){
+             var item=content[j].item
+             console.log(item)
+             count+=item.length;
+             if(j==0){
+                 html+='<td  rowspan="'+item.length+'" class="table-name">'+content[j].contentName+'</td>'
+             }else{
+                 html+='<tr ><td  rowspan="'+item.length+'" class="table-name">'+content[j].contentName+'</td>'
+             }
+             for(var k=0;k<item.length;k++){
+
+                 if(k==0){
+                     html+='<td>'+item[k].itemName+'</td>'
+                 }else{
+                     html+='<tr><td>'+item[k].itemName+'</td>'
+                 }
+                 html+='<td>'+item[k].leader+'</td>';
+                 console.log(item[k].leaderId)
+                 if((item[k].leaderId)==localStorage.getItem("name")||(role=="2")){
+                     if(item[k].isImportant=="1"){
+                         impor.push(k+(count-item.length))
+                         html+='<td data-id="'+item[k].itemId+'"><a href="javascript:void(0);" class="action point-action">取消重点</a> <a href="javascript:void(0);" class="action edit-action">编辑</a><a href="javascript:void(0);" class="action cancle-action">删除</a></td></tr>'
+                     }else{
+                         html+='<td data-id="'+item[k].itemId+'"><a href="javascript:void(0);" class="action point-action">选为重点</a> <a href="javascript:void(0);" class="action edit-action">编辑</a><a href="javascript:void(0);" class="action cancle-action">删除</a></td></tr>'
+                     }
+                 }else {
+                     if(item[k].isImportant=="1"){
+                         impor.push(k+(count-item.length))
+                     }
+                     html+='<td></td>'
+                 }
+
+
+             }
+
+         }
+         html='<tr ><td rowspan="'+count+'" class="table-name">'+data[i].workName+'</td>'+html;
+         allHtml+=html;
+     }
+     $(".table tbody").html(allHtml)
+     $(".addModal .workSelect").html(option);
+     for(var i=0;i<impor.length;i++){
+         $(".table tbody tr").eq(impor[i]).addClass("important")
+     }
+     initAction()
+ }
 </script>
 </body>
 </html>

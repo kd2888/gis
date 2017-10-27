@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <script src="js/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="js/data.js"></script>
+    <script src="js/common.js"></script>
+    <link rel="stylesheet" href="css/date.css">
+    <script src="js/date.js"></script>
 </head>
 <body>
 <style>
@@ -35,11 +37,25 @@
                 <li class="active">
                     <a href="all.html">全局展示</a>
                 </li>
+                <li class="dropdown pull-right" style="width: 160px;text-align: right;background-color:#eee">
+                    <a href="#" style="padding-left: 0" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="urerName">addasdasd</span>  <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javvscript:void(0);" id="changePaw">修改密码</a></li>
+                        <li><a href="javvscript:void(0);" id="loginOut">退出</a></li>
+                    </ul>
+                </li>
             </ul>
             <div class="page-header">
                 <h1>
                     <small><strong>全局信息展示</strong></small>
                 </h1>
+
+            </div>
+            <div class="time-box">
+               截止日期：  <input class="time-input" type="text"> <button type="button" class="btn btn-primary timeSure">确定</button>
+                <div id='schedule-box' class="boxshaw">
+
+                </div>
             </div>
             <table class="table table-bordered" >
                 <thead>
@@ -138,11 +154,167 @@
     </div>
 </div>
 <script>
-    $(function () {
-        var html=''
+
+    var mySchedule = new Schedule({
+        el: '#schedule-box',
+        //date: '2018-9-20',
+        clickCb: function (y,m,d) {
+            $(".time-input").val(y+'-'+m+'-'+d)
+            $("#schedule-box").hide()
+        }
+//        nextMonthCb: function (y,m,d) {
+//            document.querySelector('#h3Ele').innerHTML = '日期：'+y+'-'+m+'-'+d
+//        },
+//        nextYeayCb: function (y,m,d) {
+//            document.querySelector('#h3Ele').innerHTML = '日期：'+y+'-'+m+'-'+d
+//        },
+//        prevMonthCb: function (y,m,d) {
+//            document.querySelector('#h3Ele').innerHTML = '日期：'+y+'-'+m+'-'+d
+//        },
+//        prevYearCb: function (y,m,d) {
+//            document.querySelector('#h3Ele').innerHTML = '日期：'+y+'-'+m+'-'+d
+//        }
+    });
+    $(".time-input").val(getNowFormatDate());
+    $(".time-input").click(function () {
+        if( $("#schedule-box").css("display")=="none"){
+            $("#schedule-box").show();
+        }else {
+            $("#schedule-box").hide();
+        }
+    })
+    $(".timeSure").click(function () {
+        var val=$(".time-input").val();
+        var time=Date.parse(new Date(val))/1000+60*60*24;
+        openLoad()
+        $.post("php/getHistory.php",{"items":{"time":time}},function(result){
+            closeLoad()
+            console.log(result)
+            result=reconvert(result)
+            result=result.split("&")
+            console.log(result)
+            var items=[];
+            for(var i=0;i<(result.length-1);i++){
+                items.push($.parseJSON(result[i]))
+            }
+            console.log(items)
+            console.log(changeData(items))
+            changeDom(changeData(items))
+
+        });
+
+    })
+
+    //获取全局数据
+   openLoad()
+    $.post("php/getAll.php",{},function(result){
+        closeLoad()
+        console.log(result)
+        result=reconvert(result)
+        result=result.split("&")
+        console.log(result)
+        var items=[];
+        for(var i=0;i<(result.length-1);i++){
+            items.push($.parseJSON(result[i]))
+        }
+        console.log(items)
+        console.log(changeData(items))
+        changeDom(changeData(items))
+
+    });
+
+   //换行转换
+    function formate(mystr) {
+        mystr = mystr.replace(/\n\r/g,"<br>");
+        mystr = mystr.replace(/\n/g,"<br>")
+        mystr = mystr.replace(/\r/g,"<br>")
+        mystr = mystr.replace(/\t/g,"　　");
+        return mystr;
+    }
+    //中文转码
+    function reconvert(str){
+        str = str.replace(/(\\u)(\w{1,4})/gi,function($0){
+            return (String.fromCharCode(parseInt((escape($0).replace(/(%5Cu)(\w{1,4})/g,"$2")),16)));
+        });
+        str = str.replace(/(&#x)(\w{1,4});/gi,function($0){
+            return String.fromCharCode(parseInt(escape($0).replace(/(%26%23x)(\w{1,4})(%3B)/g,"$2"),16));
+        });
+        str = str.replace(/(&#)(\d{1,6});/gi,function($0){
+            return String.fromCharCode(parseInt(escape($0).replace(/(%26%23)(\d{1,6})(%3B)/g,"$2")));
+        });
+
+        return str;
+    }
+    //php数据转js
+    function changeData(data) {
+        var newData=[];
+        var workId="";
+        var contentId=""
+        for(var i=0;i<data.length;i++){
+            if(data[i].workId!=workId){
+                workId=data[i].workId;
+                contentId=data[i].contentId
+                newData.push({"workId":data[i].workId,"workName":data[i].workName,"content":[{"contentId":data[i].contentId,"contentName":data[i].contentName,"item":[{
+                    itemId: data[i].itemId,
+                    itemName: data[i].itemName,
+                    leader: data[i].leader,
+                    participant: data[i].participant,
+                    taskName: data[i].taskName,
+                    progress: data[i].progress,
+                    state: data[i].state,
+                    lastWeekWork: data[i].lastWeekWork,
+                    thisWeekWork:data[i].thisWeekWork,
+                    remark: data[i].remark,
+                    resulrt: data[i].resulrt,
+                    isImportant:data[i].isImportant
+                }]}]})
+            }else{
+                var workNum=newData.length-1;
+                if(data[i].contentId!=contentId){
+                    contentId=data[i].contentId
+                    newData[workNum].content.push({"contentId":data[i].contentId,"contentName":data[i].contentName,"item":[{
+                        itemId: data[i].itemId,
+                        itemName: data[i].itemName,
+                        leader: data[i].leader,
+                        participant: data[i].participant,
+                        taskName: data[i].taskName,
+                        progress: data[i].progress,
+                        state: data[i].state,
+                        lastWeekWork: data[i].lastWeekWork,
+                        thisWeekWork:data[i].thisWeekWork,
+                        remark: data[i].remark,
+                        resulrt: data[i].resulrt,
+                        isImportant:data[i].isImportant
+                    }]})
+                }else{
+                    var contentNum=newData[workNum].content.length-1;
+                    newData[workNum].content[contentNum].item.push({
+                        itemId: data[i].itemId,
+                        itemName: data[i].itemName,
+                        leader: data[i].leader,
+                        participant: data[i].participant,
+                        taskName: data[i].taskName,
+                        progress: data[i].progress,
+                        state: data[i].state,
+                        lastWeekWork: data[i].lastWeekWork,
+                        thisWeekWork:data[i].thisWeekWork,
+                        remark: data[i].remark,
+                        resulrt: data[i].resulrt,
+                        isImportant:data[i].isImportant
+                    })
+                }
+
+            }
+        }
+        return newData
+    }
+    //添加到页面上
+    function changeDom(data) {
+       var allHtml="";
         console.log(data)
         var impor=[];
         for(var i=0;i<data.length;i++){
+            var html=''
             var content =data[i].content;
             var count=0;
             console.log(content)
@@ -155,13 +327,13 @@
                 }
                 count+=item.length;
                 for(var k=0;k<item.length;k++){
-                    if(item[k].isImportant){
+                    if(item[k].isImportant=="1"){
                         impor.push(k+(count-item.length))
                     }
                     if(k==0){
-                        html+='<td>'+item[k].name+'</td>'
+                        html+='<td>'+item[k].itemName+'</td>'
                     }else{
-                        html+='<tr><td>'+item[k].name+'</td>'
+                        html+='<tr><td>'+item[k].itemName+'</td>'
                     }
 
                     html+='<td>'+item[k].leader+'</td>'
@@ -173,25 +345,35 @@
                     html+='<td>'+formate(item[k].thisWeekWork)+'</td>'
                     html+='<td>'+item[k].remark+'</td>'
                     html+='<td>'+formate(item[k].resulrt)+'</td>'
-                   // html+='<td>'+item[k].isImportant+'</td>'
+                    // html+='<td>'+item[k].isImportant+'</td>'
 
                 }
 
             }
-            html='<tr ><td class="table-name" rowspan="'+count+'">'+data[i].id+'</td><td class="table-name" rowspan="'+count+'">'+data[i].name+'</td>'+html;
+            html='<tr ><td class="table-name" rowspan="'+count+'">'+data[i].workId+'</td><td class="table-name" rowspan="'+count+'">'+data[i].workName+'</td>'+html;
+            allHtml+=html;
         }
-        $(".table tbody").html(html);
+        $(".table tbody").html(allHtml);
 
         for(var i=0;i<impor.length;i++){
-             $(".table tbody tr").eq(impor[i]).addClass("important")
+            $(".table tbody tr").eq(impor[i]).addClass("important")
         }
-    })
-    function formate(mystr) {
-        mystr = mystr.replace(/\n\r/g,"<br>");
-        mystr = mystr.replace(/\n/g,"<br>")
-        mystr = mystr.replace(/\r/g,"<br>")
-        mystr = mystr.replace(/\t/g,"　　");
-        return mystr;
+    }
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+
+        return currentdate;
     }
 </script>
 </body>

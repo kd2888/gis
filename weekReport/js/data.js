@@ -7,7 +7,7 @@ var data = [
                 contentId: 1,
                 item: [{
                     itemId: 1,
-                    name: "业务战略体系",
+                    itemName: "业务战略体系",
                     leader: "吴谷",
                     participant: "兴海",
                     taskName: "",
@@ -20,7 +20,7 @@ var data = [
                     isImportant:false
                 }, {
                     itemId: 2,
-                    name: "工作管理方式",
+                    itemName: "工作管理方式",
                     leader: "吴谷",
                     participant: "",
                     taskName: "",
@@ -38,7 +38,7 @@ var data = [
                 contentId: 2,
                 item: [{
                     itemId: 3,
-                    name: "人员招收计划",
+                    itemName: "人员招收计划",
                     leader: "吴谷",
                     participant: "兴海",
                     taskName: "",
@@ -51,7 +51,7 @@ var data = [
                     isImportant:true
                 }, {
                     itemId: 4,
-                    name: "建立资料积累、调研表单、项目执行的工作方法",
+                    itemName: "建立资料积累、调研表单、项目执行的工作方法",
                     leader: "粤辉",
                     participant: "兴海、天敬",
                     taskName: "",
@@ -65,7 +65,7 @@ var data = [
                 },
                     {
                         itemId: 5,
-                        name: "分享机制、版本管理",
+                        itemName: "分享机制、版本管理",
                         leader: "龙泉",
                         participant: "粤辉、兴海、天敬",
                         taskName: "",

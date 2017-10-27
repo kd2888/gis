@@ -11,28 +11,112 @@
 </head>
 <body>
 <div class="page-header" style="text-align: center">
-    <h1>login</h1>
+    <h1>登录</h1>
 </div>
 <form class="form-horizontal" style="width: 450px;margin: auto">
 
     <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">name</label>
+        <label  class="col-sm-2 control-label">用户名</label>
         <div class="col-sm-10">
-            <input type="email" class="form-control" id="inputEmail3" placeholder="name">
+            <input type="text" class="form-control" id="name" placeholder="name">
         </div>
     </div>
     <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+        <label for="password" class="col-sm-2 control-label">密码</label>
         <div class="col-sm-10">
-            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+            <input type="password" class="form-control" id="password" placeholder="Password">
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Sign in</button>
+            <button type="button" class="btn btn-default submit">提交</button>
         </div>
     </div>
 </form>
 </body>
+<script>
+
+    $(".submit").click(function () {
+        var name=$("#name").val();
+        var password=$("#password").val();
+        if(name==""){
+            newAlert("用户名不能为空");
+            return
+        }
+        if(password==""){
+            newAlert("密码不能为空");
+            return
+        }
+        var items={"name":name,"password":password}
+        $.post("php/login.php",{"items":items},function(result){
+            console.log(result)
+            var results=result.split("&")
+            if(results[0]=="1"){
+                var msg=$.parseJSON(reconvert(results[1]));
+                localStorage.setItem("key", "1");
+                localStorage.setItem("name", name);
+                localStorage.setItem("remark", msg.remark);
+                localStorage.setItem("role", msg.role);
+                localStorage.setItem("date",Date.parse(new Date()))
+               window.location.href="table.html"
+            }else{
+                newAlert(result)
+            }
+        })
+    })
+    function newAlert(string,callback) {
+        var html="";
+        html+='<div class="modal  alertModal" tabindex="-1" role="dialog" style="z-index: 1050">'
+        html+=' <div class="modal-dialog" role="document">'
+        html+='<div class="modal-content">'
+        html+='  <div class="modal-header">'
+        html+='    <button type="button" class="close closes"  aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+        html+='<h4 class="modal-title">提示</h4>'
+        html+='</div>'
+        html+='<div class="modal-body" >'
+        html+='    <p>'+string+'</p>'
+        html+='</div>'
+        html+='<div class="modal-footer" style="border-top: 0">'
+        html+='    <button type="button" class="btn btn-default closes" >取消</button>'
+        html+='    <button type="button" class="btn btn-primary sure">确认</button>'
+        html+='</div>'
+        html+='</div><!-- /.modal-content -->'
+        html+='</div><!-- /.modal-dialog -->'
+        html+='</div><!-- /.modal -->'
+        $("body").append(html)
+        $(".alertModal .sure").unbind("click");
+        $(".alertModal .closes").unbind("click");
+
+
+        $(".alertModal .sure").bind("click",function () {
+            $(this).parents(".alertModal").modal("hide");
+            $(".alertModal").remove();
+            if(callback){
+                callback()
+            }
+        })
+        $(".alertModal .closes").click(function () {
+            $(this).parents(".alertModal").modal("hide");
+            $(".alertModal").remove();
+        })
+
+        $(".alertModal").modal("show")
+    }
+    //中文转码
+    function reconvert(str){
+
+        str = str.replace(/(\\u)(\w{1,4})/gi,function($0){
+            return (String.fromCharCode(parseInt((escape($0).replace(/(%5Cu)(\w{1,4})/g,"$2")),16)));
+        });
+        str = str.replace(/(&#x)(\w{1,4});/gi,function($0){
+            return String.fromCharCode(parseInt(escape($0).replace(/(%26%23x)(\w{1,4})(%3B)/g,"$2"),16));
+        });
+        str = str.replace(/(&#)(\d{1,6});/gi,function($0){
+            return String.fromCharCode(parseInt(escape($0).replace(/(%26%23)(\d{1,6})(%3B)/g,"$2")));
+        });
+
+        return str;
+    }
+</script>
 </html>
